@@ -8,7 +8,7 @@ import os
 import base64
 from apscheduler.schedulers.background import BackgroundScheduler
 
-
+image_data_dict = {}
 
 # Dictionary to store the vote scores for each image
 image_votes = {}
@@ -54,36 +54,33 @@ def submit():
     # Get the image data from the POST request
     image_data = request.form['image']
 
-    # Create the submissions directory if it doesn't exist
-    submissions_dir = 'static/media/submissions'
-    os.makedirs(submissions_dir, exist_ok=True)
+    # Create a unique identifier for the image
+    image_id = str(random.randint(1, 1000000))
 
-    # Save the image file
-    filename = 'submission' + str(random.randint(1, 1000000)) + '.png'
-    filepath = os.path.join(submissions_dir, filename)
-    with open(filepath, 'wb') as f:
-        f.write(base64.b64decode(image_data.split(',')[1]))
-        
-    # Redirect to the /view route
-    return redirect(url_for('view'))
+    # Store the image data in a dictionary with the image ID as the key
+    image_data_dict[image_id] = image_data
+
+    # Redirect to the /view route with the image ID as a query parameter
+    return redirect(url_for('view', image_id=image_id))
+
 
 
 # Handle the /view route
 @app.route('/view')
 def view():
-    # Return all images submitted today with their respective vote scores
-    submissions_dir = 'static/media/submissions'
-    submissions = []
+    # Get the image IDs from the query parameters
+    image_ids = request.args.getlist('image_id')
 
-    for filename in os.listdir(submissions_dir):
-        if filename.endswith('.png') or filename.endswith('.jpg') or filename.endswith('.jpeg'):
-            image_path = os.path.join(submissions_dir, filename)
-            vote_score = image_votes.get(filename, 0)
-            submissions.append({'image': image_path, 'score': vote_score})
-            
-            print(vote_count)
+    # Retrieve the image data for each image ID
+    submissions = []
+    for image_id in image_ids:
+        image_data = image_data_dict.get(image_id)
+        if image_data:
+            vote_score = image_votes.get(image_id, 0)
+            submissions.append({'image': image_data, 'score': vote_score})
 
     return render_template('submissions.html', submissions=submissions, vote_count=vote_count)
+
 
 
 @app.route('/vote', methods=['POST'])
