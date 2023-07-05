@@ -1,0 +1,207 @@
+body{
+    background-color: aliceblue;
+    color: #161616;
+}
+
+/* Custom CSS to set the width and center the div */
+.custom-div {
+    width: 70%;
+    margin: 0 auto; /* Center the div horizontally */
+}
+
+.custom-title {
+    margin: 20px auto;
+    padding: 5%;
+}
+
+.definitionDiv-class{
+    background-color: #161616 !important ;
+    border: 1px solid aliceblue;
+    color: aliceblue;
+    text-align: center;
+    border-radius: 3px;
+    padding: 2px;
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeInAnimation 1s ease-in forwards;
+  }
+  
+  @keyframes fadeInAnimation {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+}
+
+.custom-link {
+  color: aliceblue;  /* Set the default hyperlink color to Bootstrap's primary color (blue) */
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.custom-link:hover {
+  color: rgb(168, 174, 178);  /* Change the hyperlink color on hover to Bootstrap's danger color (red) */
+  text-decoration: none;
+}
+
+.chinese{
+  font-family: "Microsoft YaHei";
+  font-size: 30px;
+  font-weight: lighter;
+}
+
+.book-topic-container {
+  margin-top: 0%;
+}
+
+.book-image{
+  width: 40%;
+  height: 40%;
+  padding: 3%;
+}
+
+.card-body{
+  min-height: 100px;
+  max-height: 100px;
+  padding: 6%;
+  vertical-align: middle;
+  text-align: center;
+}
+
+
+.sidenav a {
+  color: white;
+  font-size: 24px;
+}
+
+.sidenav span{
+  font-size: 10px;
+  padding-right: 1%;
+}
+
+.master-container {
+  margin-top: 10%;
+}
+
+.chinese-small{
+  font-family: "Microsoft YaHei";
+  font-size: 20px;
+  font-weight: lighter;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+
+.tab {
+  background-color: #D3D3D3; /* Darker background color */
+  padding: 10px; /* Adjust padding as desired */
+  color: #000000; /* Text color */
+  position: fixed;
+  bottom: -100px; /* Initial position below the screen */
+  transform: translateX(-50%);
+  animation: slide-up 0.8s ease-in-out forwards; /* Animation to slide up */
+  display: none;
+  left: 50%;
+  width: fit-content; /* Adjust the width to fit the content */
+  text-align: center; /* Center the content horizontally */
+  max-width: fit-content;
+}
+
+
+#install-tab {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content; /* Adjust the width to fit the content */
+  text-align: center; /* Center the content horizontally */
+  max-width: fit-content;
+}
+
+
+.up-arrow-button {
+  position: fixed;
+  bottom: 30px; /* Adjust the distance from the bottom as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  background-color: #D3D3D3;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1;
+  display: none;
+}
+
+.up-arrow-button i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.lines-2{
+  margin-top: 5%;
+  font-size: small;
+}
+
+.email{
+  font-size: 10px;
+}
+
+.card {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+}
+
+.card-body {
+  padding: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.card-body img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+}
+
+.card {
+  position: relative;
+}
+
+.star-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+}
+
+.star-icon i {
+  color: gray;
+}
+
+.star-icon i.clicked {
+  color: yellow;
+}
+
+#submit-button {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 150px;
+  background-color: #D3D3D3;
+}
