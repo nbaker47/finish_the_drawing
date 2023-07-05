@@ -7,7 +7,9 @@
 <head>
     <title>Finish the Drawing!</title>
 
-    <link rel="icon" href="{{ url_for('static', filename='media/favicon.ico') }}" sizes="any">
+    <link rel="icon" href="{{ url_for('static', filename='media/favicon1.ico') }}" sizes="any">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='media/favicon1.ico') }}" sizes="any">
+
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='media/apple-touch-icon.png') }}">
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
@@ -22,6 +24,7 @@
 </head>
 <body>
 
+    <link rel="icon" href="{{ url_for('static', filename='media/favicon1.ico') }}" sizes="any">
 
 <div class='master-container'>
     
@@ -35,12 +38,16 @@
         <canvas id="drawing-canvas" width="400" height="350" style="background-color:#D3D3D3"></canvas>
     </div>
 
-    <!-- Submit button -->
-    <button id="submit-button" class="btn fixed-bottom mx-auto" onclick="submitDrawing()">Submit</button>
+    <br>
+<!-- Submit button -->
+<div class="text-center">
+    <button id="submit-button" class="btn mx-auto" onclick="submitDrawing()">Submit</button>
+  </div>
+  
 
 </div>
 
-<!-- Footer -->
+<!-- Footer 
 <div class="position-fixed bottom-0 start-50 translate-middle-x mb-3">
     <div class="tab bg-dark text-white rounded shadow" id="install-tab">
         <div class="container">
@@ -53,7 +60,6 @@
                         <span class="ml-2 text-white lines-2"><strong>Download the app now!</strong></span>
                     </div>
                 </div>
-                <!--
                 <div class="col-6">
                     <div class="text-white text-center lines-2 text-xs">
                         <p>&copy; Immerse Lingual 2023</p>
@@ -62,7 +68,6 @@
                         </div>
                     </div>
                 </div>
-                -->
             </div>
         </div>
     </div>
@@ -70,6 +75,8 @@
         <i class="fa fa-chevron-up" aria-hidden="true"></i>
     </div>
 </div>  
+
+-->
 
 <!--jQuery-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -79,7 +86,7 @@
 <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register("/service-worker.js?v3")
+        navigator.serviceWorker.register("/service-worker.js?v4")
           .then(function(registration) {
             console.log('Service Worker registered with scope:', registration.scope);
           })
@@ -157,10 +164,8 @@
 </script>
 
 <!-- Drawing -->
-<script>
-    // Drawing
 
-    // Submit the drawing
+<script>
     function submitDrawing() {
         var canvas = document.getElementById('drawing-canvas');
         var image = canvas.toDataURL(); // Convert canvas to base64 image
@@ -182,12 +187,13 @@
         // Submit the form
         form.submit();
     }
-
-    window.addEventListener('load', function() {
+   // Drawing
+window.addEventListener('load', function() {
     // Variables for canvas and drawing
     var canvas = document.getElementById('drawing-canvas');
     var context = canvas.getContext('2d');
     var isDrawing = false;
+    var isFirstTouch = true; // Flag to differentiate between first touch and random lines
   
     // Event listeners for drawing
     canvas.addEventListener('mousedown', startDrawing);
@@ -195,68 +201,124 @@
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mouseout', stopDrawing);
   
+    // Touch event listeners for drawing
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchend', stopDrawing);
+  
     // Start drawing
     function startDrawing(event) {
+      event.preventDefault(); // Prevent scrolling on touch devices
       isDrawing = true;
       draw(event);
     }
   
     // Draw on the canvas
     function draw(event) {
-        if (!isDrawing) return;
-        var rect = canvas.getBoundingClientRect();
-        var x = event.clientX - rect.left;
-        var y = event.clientY - rect.top;
-    
-        context.lineWidth = 5;
-        context.lineCap = 'round';
-        context.strokeStyle = 'black';
-    
-        context.lineTo(x, y);
-        context.stroke();
+      if (!isDrawing) return;
+  
+      var rect = canvas.getBoundingClientRect();
+      var x, y;
+  
+      // Get the coordinates based on the event type
+      if (event.type.startsWith('touch')) {
+        x = event.touches[0].clientX - rect.left;
+        y = event.touches[0].clientY - rect.top;
+      } else {
+        x = event.clientX - rect.left;
+        y = event.clientY - rect.top;
+      }
+  
+      context.lineWidth = 5;
+      context.lineCap = 'round';
+      context.strokeStyle = 'black';
+  
+      if (isFirstTouch) {
         context.beginPath();
         context.moveTo(x, y);
+        isFirstTouch = false;
+      } else {
+        context.lineTo(x, y);
+        context.stroke();
+      }
     }
-    
   
     // Stop drawing
     function stopDrawing() {
       isDrawing = false;
       context.beginPath();
     }
-    
-    // Add random lines to the canvas
-    function addRandomLines() {
-        var numLines = 4; // Number of random lines to draw
-        var lineLength = 50; // Length of the random lines
-        var lineWidth = 5; // Width of the random lines
-    
-        for (var i = 0; i < numLines; i++) {
-        var x1 = Math.random() * canvas.width;
-        var y1 = Math.random() * canvas.height;
-        var angle = Math.random() * 2 * Math.PI; // Random angle in radians
-    
-        var curveFactor = Math.random() * 0.5 + 0.5; // Random curve factor between 0.5 and 1.0
-    
-        var x2 = x1 + lineLength * curveFactor * Math.cos(angle);
-        var y2 = y1 + lineLength * curveFactor * Math.sin(angle);
-    
-        context.lineWidth = lineWidth;
-        context.lineCap = 'round';
-        context.strokeStyle = 'black';
-    
-        context.beginPath();
-        context.moveTo(x1, y1);
-        context.quadraticCurveTo((x1 + x2) / 2, (y1 + y2) / 2, x2, y2);
-        context.stroke();
-        }
+
+
+// Add wavy line traversal to the canvas
+function addRandomLines() {
+    var n = 500; // Number of line segments
+    var a = 0.1; // Angle aperture parameter
+    var boundaryRange = 0.7; // Percentage of the canvas width/height to stay within
+    var minLength = Math.min(canvas.width, canvas.height) * 0.3; // Minimum length of the line
+  
+    var canvasWidth = canvas.width;
+    var canvasHeight = canvas.height;
+  
+    var centerX = canvasWidth / 2;
+    var centerY = canvasHeight / 2;
+  
+    var boundaryWidth = canvasWidth * boundaryRange;
+    var boundaryHeight = canvasHeight * boundaryRange;
+  
+    var startX = centerX - boundaryWidth / 2 + Math.random() * boundaryWidth;
+    var startY = centerY - boundaryHeight / 2 + Math.random() * boundaryHeight;
+  
+    var x = startX;
+    var y = startY;
+    var angle = 0;
+    var lineLength = 0;
+  
+    context.lineWidth = 5;
+    context.lineCap = 'round';
+    context.strokeStyle = 'black';
+  
+    context.beginPath();
+    context.moveTo(x, y);
+  
+    for (var k = 1; k <= n; k++) {
+      var angleVariation = (2 * Math.random() - 1) * a * Math.PI;
+      angle += angleVariation;
+  
+      // Calculate the maximum distance from the boundary
+      var maxDistanceX = Math.min(boundaryWidth / 2 - Math.abs(x - centerX), boundaryWidth / 2);
+      var maxDistanceY = Math.min(boundaryHeight / 2 - Math.abs(y - centerY), boundaryHeight / 2);
+  
+      var maxLength = Math.min(maxDistanceX, maxDistanceY);
+  
+      // Calculate the remaining length to reach the minimum length
+      var remainingLength = minLength - lineLength;
+      var r = Math.min(remainingLength, Math.random() * maxLength);
+  
+      x += r * Math.cos(angle);
+      y += r * Math.sin(angle);
+  
+      lineLength += r;
+  
+      context.lineTo(x, y);
+  
+      // Exit the loop if the line reaches the minimum length
+      if (lineLength >= minLength) {
+        break;
+      }
     }
-    
+  
+    context.stroke();
+  }
   
   
     // Call the function to add random lines when the page loads
-    addRandomLines();
+    for (var i = 0; i < 5; i++) {
+      addRandomLines();
+    }
+
   });
+  
   
     
 </script>

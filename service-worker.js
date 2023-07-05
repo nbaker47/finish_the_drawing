@@ -1,11 +1,11 @@
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v4';
 
 // Service Worker code
 self.addEventListener('install', function(event) {
     event.waitUntil(
       caches.open('my-cache').then(function(cache) {
         return cache.addAll([
-          'static/favicon/favicon.ico',
+          'static/media/favicon1.ico',
           'static/css/bootstrap.css',
           'static/css/home.css',
           'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js',

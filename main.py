@@ -9,6 +9,7 @@ import base64
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
+
 # Dictionary to store the vote scores for each image
 image_votes = {}
 app = Flask(__name__)
@@ -19,12 +20,12 @@ vote_count = {"up": 0, "down": 0}
 # serve manifest.json
 @app.route('/manifest.json')
 def serve_manifest():
-    return send_from_directory(app.root_path, 'manifest.json')
+    return send_from_directory('static', 'manifest.json')
 
-# serve manifest.json
+# serve service-worker.js
 @app.route('/service-worker.js')
 def serve_worker():
-    return send_from_directory(app.root_path, 'service-worker.js')
+    return send_from_directory('static', 'service-worker.js')
 
 # book selection page
 @app.route('/')
@@ -130,8 +131,15 @@ def schedule_image_deletion():
     scheduler = BackgroundScheduler()
     scheduler.add_job(delete_images, 'interval', days=1, start_date=datetime.now() + timedelta(days=1))
     scheduler.start()
+    
 
+
+@app.route('/favicon.ico') 
+def favicon(): 
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon1.ico', mimetype='image/vnd.microsoft.icon')
 # entry point
 if __name__ == '__main__':
     schedule_image_deletion()
-    app.run(debug=True)
+    # Route to serve the favicon1.ico file
+    app.add_url_rule('/favicon.ico',redirect_to=url_for('static', filename='favicon.ico'))
+    app.run(debug=False)

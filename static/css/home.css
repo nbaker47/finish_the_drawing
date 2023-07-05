@@ -199,9 +199,18 @@ footer {
 }
 
 #submit-button {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 150px;
   background-color: #D3D3D3;
+  max-height: fit-content;
+}
+
+.small-button {
+  font-size: 14px;
+  padding: 6px 12px;
+  max-width: fit-content;
+  width: min-content;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
