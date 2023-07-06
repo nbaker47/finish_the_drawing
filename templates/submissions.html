@@ -31,15 +31,16 @@
       <div class="col">
         <div class="card bg-light mb-3 position-relative">
           <div class="card-body">
-            <img src="{{ submission.image }}" class="img-fluid" alt="Responsive image">
+            <img src="{{ submission }}" class="img-fluid" alt="Responsive image">
             <div class="star-icon position-absolute top-0 end-0 p-2">
-              <i class="bi bi-star-fill text-gray" onclick="toggleStar(this, '{{ submission.image }}')"></i>
-              <span class="number">{{ submission.score }}</span>
+              <i class="bi bi-star-fill text-gray" onclick="toggleStar(this, '{{ image_url }}')"></i>
+              <span class="number">0</span>
             </div>
           </div>
         </div>
-      </div>
+      </div>      
       {% endfor %}
+      
     </div>
   </div>
 </div>
