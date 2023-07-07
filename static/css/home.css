@@ -1,6 +1,9 @@
 body{
     background-color: aliceblue;
-    color: #161616;
+    color: rgb(0, 0, 0);
+    background-image: url("background.png");
+    background-repeat: repeat;
+    
 }
 
 /* Custom CSS to set the width and center the div */
@@ -10,17 +13,14 @@ body{
 }
 
 .custom-title {
-    margin: 20px auto;
+    margin: 10px auto;
     padding: 5%;
-}
-
-.definitionDiv-class{
-    background-color: #161616 !important ;
-    border: 1px solid aliceblue;
-    color: aliceblue;
-    text-align: center;
-    border-radius: 3px;
-    padding: 2px;
+    color: white; /* Set the desired text color */
+    text-shadow:
+    -1.5px -1.5px 0 #000, /* Top-left */
+    1.5px -1.5px 0 #000, /* Top-right */
+    -1.5px 1.5px 0 #000, /* Bottom-left */
+    1.5px 1.5px 0 #000; /* Bottom-right */
 }
 
 .fade-in {
@@ -37,150 +37,31 @@ body{
     }
 }
 
-.custom-link {
-  color: aliceblue;  /* Set the default hyperlink color to Bootstrap's primary color (blue) */
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.custom-link:hover {
-  color: rgb(168, 174, 178);  /* Change the hyperlink color on hover to Bootstrap's danger color (red) */
-  text-decoration: none;
-}
-
-.chinese{
-  font-family: "Microsoft YaHei";
-  font-size: 30px;
-  font-weight: lighter;
-}
-
-.book-topic-container {
-  margin-top: 0%;
-}
-
-.book-image{
-  width: 40%;
-  height: 40%;
-  padding: 3%;
-}
-
-.card-body{
-  min-height: 100px;
-  max-height: 100px;
-  padding: 6%;
-  vertical-align: middle;
-  text-align: center;
-}
-
-
-.sidenav a {
-  color: white;
-  font-size: 24px;
-}
-
-.sidenav span{
-  font-size: 10px;
-  padding-right: 1%;
-}
 
 .master-container {
-  margin-top: 10%;
-}
-
-.chinese-small{
-  font-family: "Microsoft YaHei";
-  font-size: 20px;
-  font-weight: lighter;
-}
-
-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-}
-
-
-.tab {
-  background-color: #D3D3D3; /* Darker background color */
-  padding: 10px; /* Adjust padding as desired */
-  color: #000000; /* Text color */
-  position: fixed;
-  bottom: -100px; /* Initial position below the screen */
-  transform: translateX(-50%);
-  animation: slide-up 0.8s ease-in-out forwards; /* Animation to slide up */
-  display: none;
-  left: 50%;
-  width: fit-content; /* Adjust the width to fit the content */
-  text-align: center; /* Center the content horizontally */
-  max-width: fit-content;
-}
-
-
-#install-tab {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: fit-content; /* Adjust the width to fit the content */
-  text-align: center; /* Center the content horizontally */
-  max-width: fit-content;
-}
-
-
-.up-arrow-button {
-  position: fixed;
-  bottom: 30px; /* Adjust the distance from the bottom as needed */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30px;
-  height: 30px;
-  background-color: #D3D3D3;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 1;
-  display: none;
-}
-
-.up-arrow-button i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.lines-2{
   margin-top: 5%;
-  font-size: small;
-}
-
-.email{
-  font-size: 10px;
 }
 
 .card {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  height: 100% !important;
+  display: flex ;
+  align-items: center ;
+  justify-content: center ;
+  height: 200px !important;
+  width: 200px !important;
 }
 
 .card-body {
-  padding: 0 !important;
-  height: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: flex ;
+  align-items: center ;
+  justify-content: center ;
+  height: 100%;
+  width: 100%;
+  padding: 2px;
 }
 
 .card-body img {
-  max-width: 100% !important;
-  max-height: 100% !important;
-  object-fit: contain !important;
-}
-
-.card {
-  position: relative;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .star-icon {
@@ -199,8 +80,11 @@ footer {
 }
 
 #submit-button {
-  background-color: #D3D3D3;
-  max-height: fit-content;
+  background-color: rgb(255, 255, 255);
+  width: 200px;
+  font-weight: bold;
+  box-shadow: 0px 0px 2px 0px #000000;
+  font-size: 40px;
 }
 
 .small-button {
@@ -213,4 +97,42 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#drawing-canvas {
+  box-shadow: 0px 0px 2px 0px #000000;
+  background-color: rgb(255, 255, 255);
+}
+
+button {
+  --c:  #ffff97; /* the color*/
+  
+  box-shadow: 0 0 1px 0 inset var(--c); 
+  --_g: linear-gradient(var(--c) 0 0) no-repeat;
+  background: 
+    var(--_g) calc(var(--_p,0%) - 100%) 0%,
+    var(--_g) calc(200% - var(--_p,0%)) 0%,
+    var(--_g) calc(var(--_p,0%) - 100%) 100%,
+    var(--_g) calc(200% - var(--_p,0%)) 100%;
+  background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
+  outline-offset: .1em;
+  transition: background-size .4s, background-position 0s .4s;
+}
+button:hover {
+  --_p: 100%;
+  transition: background-position .4s, background-size 0s;
+}
+button:active {
+  box-shadow: 0 0 9e9q inset #0009; 
+  background-color: var(--c);
+  color: #fff;
+}
+
+button {
+  font-family: system-ui, sans-serif;
+  font-size: 3.5rem;
+  cursor: pointer;
+  padding: .1em .6em;
+  font-weight: bold;  
+  border: none;
 }

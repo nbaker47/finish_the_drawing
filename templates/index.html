@@ -14,7 +14,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
-    <link rel="manifest" href="/manifest.json" />
+    <!--<link rel="manifest" href="/manifest.json" />-->
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#161616">
@@ -29,21 +29,21 @@
 <div class='master-container'>
     
     <!--Title-->
-    <div class="display-1 text-center custom-title fade-in" style='padding-top:50px'>
+    <div class="display-1 text-center custom-title fade-in">
         <h1> Today, finish this drawing of a: "{{word}}"</h1> 
     </div>
 
     <!--Canvas-->
     <div class="text-center">
-        <canvas id="drawing-canvas" width="400" height="350" style="background-color:#D3D3D3"></canvas>
+        <canvas id="drawing-canvas" width="400" height="350"></canvas>
     </div>
 
     <br>
-<!-- Submit button -->
-<div class="text-center">
-    <button id="submit-button" class="btn mx-auto" onclick="submitDrawing()">Submit</button>
-  </div>
-  
+
+    <!-- Submit button -->
+    <div class="text-center button">
+      <button id="submit-button" class="btn mx-auto submit-feedback" onclick="submitDrawing()">Submit</button>
+    </div>
 
 </div>
 
@@ -82,7 +82,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!--Bootstrap JS-->
 <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
-<!--Service Worker-->
+<!--Service Worker
 <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
@@ -96,7 +96,8 @@
       });
     }
 </script>
-<!--Download Button-->
+-->
+<!--Download Button
 <script>
     let deferredPrompt;
 
@@ -162,6 +163,7 @@
     
 
 </script>
+-->
 
 <!-- Drawing -->
 
@@ -174,6 +176,7 @@
         var form = document.createElement('form');
         form.action = '/submit';
         form.method = 'POST';
+        // form.enctype = 'multipart/form-data'; // Set the enctype attribute
     
         var input = document.createElement('input');
         input.type = 'hidden';
