@@ -20,26 +20,31 @@
 </head>
 <body>
 
-<div class="display-1 text-center custom-title fade-in">
-    <h1> Today's Submissions </h1>
-</div>
 
-<div class="custom-div fade-in text-center fade-in" id="books">
-  <div class="container">
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-      {% for submission in submissions %}
-      <div class="col mb-4">
-        <div class="card position-relative h-100">
-          <div class="card-body">
-            <img src="{{ submission }}" alt="Submission Image">
-            <div class="star-icon position-absolute top-0 end-0 p-2">
-              <i class="bi bi-star-fill text-gray" onclick="toggleStar(this, '{{ image_url }}')"></i>
-              <span class="number">0</span>
+
+<div class='master-container'>
+  <div class="text-center custom-title fade-in">
+      <p class='h1 font-weight-bolder'> Today's Submissions </p>
+  </div>
+  
+  <div class="custom-div fade-in text-center fade-in" id="books">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for submission in submissions %}
+        <div class="col mb-4">
+          <div class="card" >
+            <div class="card-body">
+              <img src="{{ submission }}" alt="Submission Image">
+              <div class="star-icon position-absolute top-0 end-0 p-2">
+                <i class="bi bi-star-fill text-gray" onclick="toggleStar(this, '{{ image_url }}')"></i>
+                <span class="number">0</span>
+              </div>
             </div>
+            <div class="card-footer"><span class='image-description'></span></div>
           </div>
         </div>
-      </div>      
-      {% endfor %}
+        {% endfor %}
+      </div>
     </div>
   </div>
 </div>
@@ -87,7 +92,80 @@
   }
 </script>
 
+<!-- Random image description -->
+<script>
+  // Array of snarky, sarcastic, and passive-aggressive image descriptions
+  const descriptions = [
+    "Wow, what a masterpiece... if you're into that sort of thing.",
+    "Great job capturing the essence of mundanity.",
+    "Another picture that exists, how fascinating.",
+    "Just when I thought I couldn't be less impressed...",
+    "Oh, look, more mediocrity.",
+    "Well, isn't this just a thrilling image...",
+    "Congratulations, you've successfully documented nothing special.",
+    "I'm sure someone, somewhere might find this interesting... maybe.",
+    "Just when I thought my eyes couldn't roll any harder...",
+    "Yet another breathtakingly average picture.",
+    "Oh, the sheer brilliance of this... *insert eye roll*",
+    "A picture that makes me question my life choices.",
+    "You've managed to capture the essence of 'meh'.",
+    "I suppose this passes for creativity in some alternate universe.",
+    "And here we have yet another disappointment.",
+    "Well, this certainly won't be winning any awards.",
+    "I've seen more captivating images on a blank canvas.",
+    "Your ability to capture the mundane is truly remarkable... or not.",
+    "Just what the world needed, another forgettable image.",
+    "If you were aiming for underwhelming, you've succeeded.",
+    "I must say, the banality is astounding.",
+    "Yet another gem in the realm of unremarkable photography.",
+    "If mediocrity had an image, this would be it.",
+    "Well, it's certainly a picture... no denying that.",
+    "The profoundness of this image is truly overwhelming... or not.",
+    "If only I could unsee this image...",
+    "What a time to be alive... and witness such a lackluster photo.",
+    "A picture that's just as underwhelming as it seemed it would be.",
+    "Well, that's... something, I guess.",
+    "Congratulations on capturing the epitome of averageness.",
+    "I can only imagine the multitude of emotions this image invokes... actually, no I can't.",
+    "Another day, another uninspiring image.",
+    "It's truly remarkable how unremarkable this image is.",
+    "This image redefines the term 'profoundly unimpressive'.",
+    "Yet another shining example of blandness.",
+    "Well, this certainly won't be remembered for its originality.",
+    "If monotony had a face, this would be it.",
+    "I have to admire your dedication to capturing the mundane.",
+    "Oh look, it's a picture. How... fascinating.",
+    "Behold, a masterpiece of mediocrity.",
+    "The sheer genius of this image is absolutely underwhelming.",
+    "I'm trying to come up with something nice to say, but...",
+    "Another day, another forgettable image in the annals of history.",
+    "And here we have a breathtaking example of ordinary.",
+    "I'm truly awe-struck by the unimpressiveness of this image.",
+    "Well, this certainly isn't going to break the internet.",
+    "If you were aiming for indifference, you've achieved it.",
+    "Just when I thought I couldn't be less interested...",
+    "I must commend your commitment to capturing the banal.",
+    "If this image were any blander, it would be invisible.",
+    "What a remarkable display of mundanity.",
+    "And here I thought I'd never see another unexceptional photo.",
+    "I'm genuinely unimpressed by the effort put into this image.",
+  ];
 
+  // Function to generate a random description
+  function getRandomDescription() {
+  const randomIndex = Math.floor(Math.random() * descriptions.length);
+  return descriptions[randomIndex];
+  }
+
+  // Get all the elements with the class 'image-description'
+  const spanElements = document.getElementsByClassName('image-description');
+
+  // Set random descriptions for each span element
+  for (let i = 0; i < spanElements.length; i++) {
+    spanElements[i].textContent = getRandomDescription();
+  }
+
+</script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>

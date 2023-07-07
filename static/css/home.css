@@ -1,62 +1,102 @@
 body{
-    background-color: aliceblue;
+    background-color: rgb(244, 250, 255);
     color: rgb(0, 0, 0);
-    background-image: url("background.png");
-    background-repeat: repeat;
-    
+    /*background-image: url("background.png");
+    background-repeat: repeat;*/
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgb(197, 197, 197) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(213, 213, 213) 1px, transparent 1px);
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
 /* Custom CSS to set the width and center the div */
 .custom-div {
     width: 70%;
     margin: 0 auto; /* Center the div horizontally */
+    margin-top: 2%;
 }
 
 .custom-title {
-    margin: 10px auto;
-    padding: 5%;
+    padding: 15px;
     color: white; /* Set the desired text color */
-    text-shadow:
-    -1.5px -1.5px 0 #000, /* Top-left */
-    1.5px -1.5px 0 #000, /* Top-right */
-    -1.5px 1.5px 0 #000, /* Bottom-left */
-    1.5px 1.5px 0 #000; /* Bottom-right */
+    -webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: black;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.emph-title{
+  font-size: 60px;
+  -webkit-text-stroke-width: 2px;
+}
+
+.custom-title h1 {
+  font-style: italic;
 }
 
 .fade-in {
     opacity: 0;
     animation: fadeInAnimation 1s ease-in forwards;
-  }
+}
   
-  @keyframes fadeInAnimation {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
+.bounce-in {
+  animation: bounceIn 1s ease;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(30px);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 
 .master-container {
-  margin-top: 5%;
+  margin-top: 2%;
+}
+
+.container{
 }
 
 .card {
-  display: flex ;
-  align-items: center ;
-  justify-content: center ;
-  height: 200px !important;
-  width: 200px !important;
+  border: 2px solid rgb(80, 85, 86);
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+}
+
+.card-footer {
+  height: 100%;
+  width: 100%;
+  background-color: rgb(192, 236, 242);
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .card-body {
-  display: flex ;
-  align-items: center ;
-  justify-content: center ;
   height: 100%;
   width: 100%;
   padding: 2px;
+  background-color: #fff;
+  border-radius: 5px;
 }
 
 .card-body img {
@@ -79,14 +119,6 @@ body{
   color: yellow;
 }
 
-#submit-button {
-  background-color: rgb(255, 255, 255);
-  width: 200px;
-  font-weight: bold;
-  box-shadow: 0px 0px 2px 0px #000000;
-  font-size: 40px;
-}
-
 .small-button {
   font-size: 14px;
   padding: 6px 12px;
@@ -100,14 +132,53 @@ body{
 }
 
 #drawing-canvas {
-  box-shadow: 0px 0px 2px 0px #000000;
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  border-radius: 5px;
+}
+
+.drawing-interface{
+  margin-top: 2%;
+
+}
+
+.inner-interface{
+  border: 2px solid rgb(80, 85, 86);
+  border-radius: 5px;
+  margin: 0 auto;
   background-color: rgb(255, 255, 255);
 }
 
-button {
-  --c:  #ffff97; /* the color*/
+.inner-interface {
+  border: 2px solid rgb(80, 85, 86);
+  border-radius: 5px;
+  margin: 0 auto;
+  background-color: rgb(255, 255, 255);
+}
+
+@media (max-width: 767px) {
+  .inner-interface {
+    width: 90%;
+  }
+}
+
+@media (min-width: 768px) {
+  .inner-interface {
+    width: 40%;
+  }
+}
+
+.custom-button {
+  background-color: rgb(255, 255, 255);
+  width: 49%;
+  font-size: 30px;
+  cursor: pointer;
+  font-weight: bold;  
+  color: rgb(255, 255, 255);
+  --c:  #8aabff; /* the color*/
+  height: 65px;
   
-  box-shadow: 0 0 1px 0 inset var(--c); 
+  box-shadow: 0 0 0.1px 0 inset var(--c); 
   --_g: linear-gradient(var(--c) 0 0) no-repeat;
   background: 
     var(--_g) calc(var(--_p,0%) - 100%) 0%,
@@ -115,24 +186,22 @@ button {
     var(--_g) calc(var(--_p,0%) - 100%) 100%,
     var(--_g) calc(200% - var(--_p,0%)) 100%;
   background-size: 50.5% calc(var(--_p,0%)/2 + .5%);
-  outline-offset: .1em;
   transition: background-size .4s, background-position 0s .4s;
 }
-button:hover {
+
+.custom-button:hover {
   --_p: 100%;
   transition: background-position .4s, background-size 0s;
+  color: #ffffff; /* Add the desired font color */
 }
-button:active {
-  box-shadow: 0 0 9e9q inset #0009; 
+
+.custom-button:active {
   background-color: var(--c);
   color: #fff;
 }
 
-button {
-  font-family: system-ui, sans-serif;
-  font-size: 3.5rem;
-  cursor: pointer;
-  padding: .1em .6em;
-  font-weight: bold;  
-  border: none;
+.button-container {
+  background-color: #97d6de;
+  border-top: 2px solid rgb(80, 85, 86);
 }
+

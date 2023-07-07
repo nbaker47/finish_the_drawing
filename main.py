@@ -9,6 +9,7 @@ from google.cloud import storage
 from PIL import Image
 import io
 from io import BytesIO
+import pytz
 
 
 # Dictionary to store the vote scores for each image
@@ -31,9 +32,21 @@ def serve_worker():
 # book selection page
 @app.route('/')
 def index():
+    
+    # Specify the time zone
+    timezone = pytz.timezone('America/New_York')
+    
+    # Get the current time
+    current_time = datetime.now(timezone)
+    
+    # Print the current time
+    print("Current time:", current_time, 'timezone:', timezone)
+    
     # Set a seed for consistent random noun each day
-    today = date.today()
-    seed = today.year * 10000 + today.month * 100 + today.day
+    current_date = current_time.date()
+    
+    # set seed
+    seed = current_date.year * 10000 + current_date.month * 100 + current_date.day
     random.seed(seed)
 
     # Retrieve a random noun
