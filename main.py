@@ -182,4 +182,4 @@ if __name__ == '__main__':
     # Route to serve the favicon1.ico file
     # g.cursor.execute("DELETE FROM images")
     app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon1.ico'))
-    app.run(debug=False)
+    app.run()
