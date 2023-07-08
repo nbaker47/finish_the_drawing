@@ -27,11 +27,12 @@
 
     <link rel="icon" href="{{ url_for('static', filename='media/favicon1.ico') }}" sizes="any">
 
-<div class='master-container'>
+<div class='master-container index-container'>
     
   <!--Title-->
   <div class="text-center custom-title">
-      <span class=''> Today, finish this drawing of a:</span>
+      <!--<span class=''> Today, finish this drawing of a:</span>-->
+      <img src="https://fontmeme.com/permalink/230708/6d7b11b0ef475bbee778dfe5f61a4c73.png" alt="handwriting-fonts" border="0">
       <div class='bounce-in'>
         <span class=" emph-title">"{{word}}"</span>
       </div>
@@ -43,9 +44,9 @@
       <!-- Canvas -->
       <canvas id="drawing-canvas" width="400" height="350"></canvas>
       <!-- Submit button and Back button -->
-      <div class="text-center button-container">
+      <div class="text-center button-container d-flex align-items-center">
         <button id="back-button" class="btn mx-auto back-button custom-button" onclick="undoLastStroke()"><i class="fas fa-undo"></i></button>
-        <button id="submit-button" class="btn mx-auto submit-feedback custom-button" onclick="submitDrawing()">Submit</button>
+        <button id="submit-button" class="btn mx-auto submit-feedback custom-button align-items-center" onclick="submitDrawing()">Submit</button>
       </div>
     </div>
   </div>
