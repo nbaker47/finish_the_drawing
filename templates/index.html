@@ -44,14 +44,49 @@
       <!-- Canvas -->
       <canvas id="drawing-canvas" width="400" height="350"></canvas>
       <!-- Submit button and Back button -->
-      <div class="text-center button-container d-flex align-items-center">
+      <div class="text-center button-container d-flex want-to-gray">
         <button id="back-button" class="btn mx-auto back-button custom-button" onclick="undoLastStroke()"><i class="fas fa-undo"></i></button>
-        <button id="submit-button" class="btn mx-auto submit-feedback custom-button align-items-center" onclick="submitDrawing()">Submit</button>
+        <button id="submit-button" class="btn mx-auto submit-feedback custom-button" onclick="submitDrawing()">Submit</button>
       </div>
     </div>
   </div>
 
+
+  <!-- Footer -->
+  <footer class="footer p-1 text-center">
+    <div class="container text-center footer-container">
+        <div class="row d-flex align-items-center">
+
+            <div class="col-3">
+                <div class="settings-icon want-to-invert" onclick="openSettingsTab()">
+                  <i class="fas fa-cog " style="color: #000000;"></i>
+                </div>
+                <div id="settings-tab" class="settings-tab want-to-invert">
+                      <input type="range" min="1" max="3" value="1" class="slider" id="myRange">
+                      <input type="range" min="1" max="2" value="1" class="slider" id="myRangeTheme">
+                </div>
+            </div>
+
+            <div class="col-6">
+                <span>2023 Finish the Drawing ©</span>
+            </div>
+
+            <div class="col-3 d-flex justify-content-end">
+                <div class="email-icon want-to-invert" onclick="openEmailTab()">
+                    <i class="fa-regular fa-envelope fa-lg" style="color: #000000;padding-top: 12px;"></i>
+                </div>
+                <div id="email-tab" class="email-tab want-to-invert">
+                    <span>finishthedrawing.contact@gmail.com</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+  </footer>
+
 </div>
+
+
 
 <!--jQuery-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -330,6 +365,90 @@
   });
 </script>
 
+
+
+<!--Slider-->
+<script>
+  // emotion
+  const slide = document.getElementById('myRange');
+  var imageUrl = "url('happy.png')";
+  document.documentElement.style.setProperty('--dynamicImage', imageUrl);
+
+  slide.addEventListener('input', function() {
+
+    switch (this.value) {
+      case '1':
+        imageUrl = "url('happy.png')";
+        break;
+      case '2':
+        imageUrl = "url('neutral.png')";
+        break;
+      case '3':
+        imageUrl = "url('sad.png')";
+        break;
+    }
+
+    document.documentElement.style.setProperty('--dynamicImage', imageUrl);
+    // Set random descriptions for each span element
+    for (let i = 0; i < spanElements.length; i++) {
+      spanElements[i].textContent = getRandomDescription(this.value);
+    }
+    for (let i = 0; i < cardFooters.length; i++) {
+      shrinkTextToFit(cardFooters[i]);
+    }
+  });
+
+  // theme
+  const slideTheme = document.getElementById('myRangeTheme');
+  slideTheme.addEventListener('input', function() {
+    
+    var element = document.body;
+    element.classList.toggle("dark-mode");
+
+    var element2 = document.getElementsByClassName('card-footer');
+    for (let i = 0; i < element2.length; i++) {
+      element2[i].classList.toggle("dark-mode");
+      element2[i].classList.toggle("dark-mode-box");
+    }
+
+    var element3 = document.getElementsByClassName('footer');
+    for (let i = 0; i < element3.length; i++) {
+      element3[i].classList.toggle("dark-mode");
+      element3[i].classList.toggle("dark-mode-box");
+    }
+
+    var element4 = document.getElementsByClassName('want-to-invert');
+    for (let i = 0; i < element4.length; i++) {
+      element4[i].classList.toggle("inverted-color");
+    }
+
+    var element5 = document.getElementsByClassName('button-container');
+    for (let i = 0; i < element5.length; i++) {
+      element5[i].classList.toggle("dark-mode");
+      element5[i].classList.toggle("dark-mode-box");
+    }
+
+  });
+
+  function openSettingsTab() {
+    var settingsTab = document.getElementById('settings-tab');
+    if (settingsTab.style.display === '' || settingsTab.style.display === 'none') {
+      settingsTab.style.display = 'block';
+    } else {
+      settingsTab.style.display = 'none';
+    }
+  }
+
+  function openEmailTab(){
+    var emailTab = document.getElementById('email-tab');
+    if (emailTab.style.display === '' || emailTab.style.display === 'none') {
+      emailTab.style.display = 'block';
+    } else {
+      emailTab.style.display = 'none';
+    }
+  }
+  
+</script>
 
 </body>
 </html>

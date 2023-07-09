@@ -36,10 +36,10 @@
     <div class="container">
       <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for submission in submissions %}
-        <div class="col-md-3 my-3">
+        <div class="col-md-3 my-3 ">
           <div class="card" >
-            <div class="card-body">
-              <img src="{{ submission }}" alt="Submission Image">
+            <div class="card-body want-to-invert">
+              <img src="{{ submission }}" alt="Submission Image" class='submission-image'>
               <div class="star-icon position-absolute top-0 end-0 p-2">
                 <i class="bi bi-star-fill text-gray" onclick="toggleStar(this, '{{ image_url }}')"></i>
                 <span class="number">0</span>
@@ -59,11 +59,12 @@
         <div class="row d-flex align-items-center">
 
             <div class="col-3">
-                <div class="settings-icon" onclick="openSettingsTab()">
-                    <i class="fas fa-cog" aria-hidden="true"></i>
+                <div class="settings-icon want-to-invert" onclick="openSettingsTab()">
+                  <i class="fas fa-cog " style="color: #000000;"></i>
                 </div>
-                <div id="settings-tab" class="settings-tab">
-                    <input type="range" min="1" max="3" value="1" class="slider" id="myRange">
+                <div id="settings-tab" class="settings-tab want-to-invert">
+                      <input type="range" min="1" max="3" value="1" class="slider" id="myRange">
+                      <input type="range" min="1" max="2" value="1" class="slider" id="myRangeTheme">
                 </div>
             </div>
 
@@ -72,17 +73,17 @@
             </div>
 
             <div class="col-3 d-flex justify-content-end">
-                <div class="email-icon" onclick="openEmailTab()">
+                <div class="email-icon want-to-invert" onclick="openEmailTab()">
                     <i class="fa-regular fa-envelope fa-lg" style="color: #000000;"></i>
                 </div>
-                <div id="email-tab" class="email-tab">
+                <div id="email-tab" class="email-tab want-to-invert">
                     <span>finishthedrawing.contact@gmail.com</span>
                 </div>
             </div>
 
         </div>
     </div>
-</footer>
+  </footer>
 
 
 </div>
@@ -91,6 +92,7 @@
 
 <!--Slider-->
 <script>
+  // emotion
   const slide = document.getElementById('myRange');
   var imageUrl = "url('happy.png')";
   document.documentElement.style.setProperty('--dynamicImage', imageUrl);
@@ -116,6 +118,31 @@
     }
     for (let i = 0; i < cardFooters.length; i++) {
       shrinkTextToFit(cardFooters[i]);
+    }
+  });
+
+  // theme
+  const slideTheme = document.getElementById('myRangeTheme');
+  slideTheme.addEventListener('input', function() {
+    
+    var element = document.body;
+    element.classList.toggle("dark-mode");
+
+    var element2 = document.getElementsByClassName('card-footer');
+    for (let i = 0; i < element2.length; i++) {
+      element2[i].classList.toggle("dark-mode");
+      element2[i].classList.toggle("dark-mode-box");
+    }
+
+    var element3 = document.getElementsByClassName('footer');
+    for (let i = 0; i < element3.length; i++) {
+      element3[i].classList.toggle("dark-mode");
+      element3[i].classList.toggle("dark-mode-box");
+    }
+
+    var element4 = document.getElementsByClassName('want-to-invert');
+    for (let i = 0; i < element4.length; i++) {
+      element4[i].classList.toggle("inverted-color");
     }
   });
 

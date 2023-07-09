@@ -1,16 +1,28 @@
 body{
-    background-color: rgb(244, 250, 255);
-    color: rgb(0, 0, 0);
-    /*background-image: url("background.png");
-    background-repeat: repeat;*/
-    background-size: 40px 40px;
-    background-image:
-      linear-gradient(to right, rgb(197, 197, 197) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(213, 213, 213) 1px, transparent 1px);
+  background-color: rgb(244, 250, 255);
+  color: rgb(0, 0, 0);
+  /*background-image: url("background.png");
+  background-repeat: repeat;*/
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgb(197, 197, 197) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(213, 213, 213) 1px, transparent 1px);
+}
+
+.dark-mode {
+  background-color: rgb(16 16 21) !important;
+  color: white !important;
+  background-image:
+  linear-gradient(to right, rgb(77, 77, 77) 1px, transparent 1px),
+  linear-gradient(to bottom, rgb(72, 72, 72) 1px, transparent 1px);
+}
+
+.dark-mode-box {
+  background-color: rgb(45, 46, 52) !important;
 }
 
 /* Custom CSS to set the width and center the div */
-.custom-div {
+.custom-div { 
     width: 70%;
     margin: 0 auto; /* Center the div horizontally */
     margin-top: 2%;
@@ -79,7 +91,7 @@ body{
   position: relative;
   min-height: 100vh;
   margin-top: 2%;
-}
+  }
 
 .container{
 }
@@ -187,7 +199,7 @@ body{
 #drawing-canvas {
   background-color: rgb(255, 255, 255);
   width: 100%;
-  height: 85%;
+  height: 83%;
   border-radius: 5px;
 }
 
@@ -195,7 +207,7 @@ body{
   background-color: #97d6de;
   border-top: 2px solid rgb(80, 85, 86);
   border-radius: 5px;
-  height: 15%;
+  height: 17%;
 }
 
 .custom-button {
@@ -273,11 +285,15 @@ body{
   background-position: center center; 
 }
 
+#myRangeTheme{
+  --dynamicImage: url("theme.png");
+}
+
 .footer{
   background-color: #97d6de;
   border: 2px solid rgb(80, 85, 86);
   margin-top: 2%;
-  position: fixed ;
+  position: fixed !important;
   left: 0;
   bottom: 0;
   width: 100%;
@@ -327,14 +343,18 @@ body{
   display: none;
   /* Styling for the settings tab */
   position: absolute;
-  top: -28px; /* Adjust the value to position the tab above the icon */
+  top: -82px; /* Adjust the value to position the tab above the icon */
   /* Rest of the styles */
+  background-color: #ffffff;
+  border-radius: 50%;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 4px;
+  padding: 4px;
 }
 
 .footer span {
   display: block;
-  font-size: 13px;
-  color: #000;
+  font-size: 11px;
 }
 
 .email-tab {
@@ -380,5 +400,10 @@ body{
 }
 
 .index-container{
-margin-top: 45px;
+  padding: 45px;
+}
+
+.inverted-color {
+  -webkit-filter: invert(1);
+  filter: invert(1);
 }
