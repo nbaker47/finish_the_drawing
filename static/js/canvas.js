@@ -125,6 +125,41 @@ function startDrawing(event) {
     };
 }
 
+function checkIntersection(x1, y1, x2, y2) {
+    for (var i = 0; i < randomLines.length; i++) {
+        var line = randomLines[i];
+        for (var j = 1; j < line.length; j++) {
+            var x3 = line[j - 1].x;
+            var y3 = line[j - 1].y;
+            var x4 = line[j].x;
+            var y4 = line[j].y;
+
+            var intersect = getLineIntersection(x1, y1, x2, y2, x3, y3, x4, y4);
+            if (intersect) {
+                return true; // Intersection found
+            }
+        }
+    }
+    return false; // No intersection found
+}
+
+function getLineIntersection(x1, y1, x2, y2, x3, y3, x4, y4) {
+    var ua =
+        ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) /
+        ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+    var ub =
+        ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) /
+        ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+
+    if (ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1) {
+        var x = x1 + ua * (x2 - x1);
+        var y = y1 + ua * (y2 - y1);
+        return { x: x, y: y };
+    }
+    return null;
+}
+
+
 // Draw on the canvas
 function draw(event) {
     // Get the coordinates of the cursor
@@ -132,6 +167,16 @@ function draw(event) {
     // console.log(x_temp, y_temp);
 
     if (!isDrawing) return;
+
+    // Check if the current line segment intersects with any of the random lines
+    var isIntersecting = checkIntersection(currentLine.points[0].x, currentLine.points[0].y, x_temp, y_temp);
+  
+    if (isIntersecting) {
+        // If intersection occurs, stop drawing
+        // stopDrawing();
+        //return;
+    }
+
     context.lineWidth = 5;
     context.lineCap = 'round';
 
@@ -143,21 +188,22 @@ function draw(event) {
     drawRandomLines();
 
     userDrawings.forEach(function (line) {
-    context.beginPath();
-    context.moveTo(line.points[0].x, line.points[0].y);
-    for (var i = 1; i < line.points.length; i++) {
-        context.lineTo(line.points[i].x, line.points[i].y);
-    }
-    context.stroke(); 
+        context.beginPath();
+        context.moveTo(line.points[0].x, line.points[0].y);
+        for (var i = 1; i < line.points.length; i++) {
+            context.lineTo(line.points[i].x, line.points[i].y);
+        }
+        context.stroke(); 
     });
 
     context.beginPath();
     context.moveTo(currentLine.points[0].x, currentLine.points[0].y);
     for (var i = 1; i < currentLine.points.length; i++) {
-    context.lineTo(currentLine.points[i].x, currentLine.points[i].y);
+        context.lineTo(currentLine.points[i].x, currentLine.points[i].y);
     }
     context.stroke();
 }
+
 
 // Stop drawing
 function stopDrawing() {
