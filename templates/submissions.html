@@ -27,10 +27,12 @@
           <div class="card-body want-to-invert">
             <div class="star-icon"> 
               <i class="bi bi-star-fill"
-                {% if submission.id not in request.cookies.get('voted_image') %} onclick="toggleStar(this, '{{ submission.id }}')"  {% endif %} 
-                {% if submission.id in request.cookies.get('voted_image') %} style="color: gold;" {% endif %} >
+                {% if request.cookies.get('voted_image') %}
+                  {% if submission.id not in request.cookies.get('voted_image') %} onclick="toggleStar(this, '{{ submission.id }}')"  {% endif %} 
+                  {% if submission.id in request.cookies.get('voted_image') %} style="color: gold;" {% endif %}
+                {% endif %}
+              > {{ submission.votes }}  
               </i>
-              <span class="number want-to-invert">{{ submission.votes }}</span>
             </div>
             <img src="{{ submission.image }}" alt="Submission Image" class='submission-image'>
           </div>

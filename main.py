@@ -165,9 +165,11 @@ def submit():
     votes = 0
     message = request.form['comment']
     db_config.create_entry(id, image_url, votes, message)
-
-    # Redirect to the /view route
-    return redirect(url_for('view'))
+    
+    response = redirect(url_for("view"))
+    response.set_cookie('voted_image', '0')
+    
+    return response
 
 
 @app.route('/vote', methods=['POST'])
@@ -198,6 +200,7 @@ def vote():
     db_config.vote(id)
     
     return response
+
 
 @app.route('/print_session_cookie')
 def print_session_cookie():
