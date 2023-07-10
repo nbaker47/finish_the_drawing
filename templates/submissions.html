@@ -1,29 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
-<meta charset="UTF-8">
-<head>
-    <title>Finish the Drawing!</title>
 
-    <link rel="icon" href="{{ url_for('static', filename='media/favicon1.ico') }}" sizes="any">
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='media/apple-touch-icon.png') }}">
+{% extends "base.html" %}
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
-    <!-- Link to Bootstrap Icons CSS file -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#161616">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Immerse Lingual is a web app that allows you to read classical Chinese texts with a built-in dictionary.">
-
-    <script src="https://kit.fontawesome.com/aa13770cf3.js" crossorigin="anonymous"></script>
-
-</head>
-<body>
-
+{% block content %}
 
 <!-- Title and Content -->
 <div class='master-container'>
@@ -31,421 +9,107 @@
   <div class="text-center custom-title fade-in">
       <p class='h2 font-weight-bolder'> Today's Submissions </p>
   </div>
-  <!-- Submissions -->
-  <div class="custom-div fade-in text-center fade-in" id="books">
-    <div class="container">
-      <div class="row row-cols-1 row-cols-md-2 g-4">
-        {% for submission in submissions %}
-        <div class="col-md-3 my-3 ">
-          <div class="card" >
-            <div class="card-body want-to-invert">
-              <img src="{{ submission }}" alt="Submission Image" class='submission-image'>
-              <div class="star-icon position-absolute top-0 end-0 p-2">
-                <i class="bi bi-star-fill text-gray" onclick="toggleStar(this, '{{ image_url }}')"></i>
-                <span class="number">0</span>
-              </div>
-            </div>
-            <div class="card-footer"><span class='image-description'></span></div>
+  
+<!-- Submissions -->
+<div class="custom-div fade-in text-center fade-in" id="books" style='margin-bottom:80px'>
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      {% for submission in submissions %}
+      <div class="col-md-3 my-3">
+        <div class="card  {% if loop.index0 == 0 %}first-card{% endif %} {% if loop.index0 == 1 %}second-card{% endif %} {% if loop.index0 == 2 %}third-card{% endif %}">
+          {% if loop.index0 < 3 %}
+          <div class='podium'>  
+            {% if loop.index0 == 0 %} <i class="fa-solid fa-trophy" style="color: #ffc800;"></i>{% endif %}
+            {% if loop.index0 == 1 %} <i class="fa-solid fa-trophy" style="color: silver"></i> {% endif %}
+            {% if loop.index0 == 2 %} <i class="fa-solid fa-trophy" style="color: #cd7f32;"></i> {% endif %} 
           </div>
+          {% endif %}
+          <div class="card-body want-to-invert">
+            <div class="star-icon"> 
+              <i class="bi bi-star-fill"
+                {% if submission.id not in request.cookies.get('voted_image') %} onclick="toggleStar(this, '{{ submission.id }}')"  {% endif %} 
+                {% if submission.id in request.cookies.get('voted_image') %} style="color: gold;" {% endif %} >
+              </i>
+              <span class="number want-to-invert">{{ submission.votes }}</span>
+            </div>
+            <img src="{{ submission.image }}" alt="Submission Image" class='submission-image'>
+          </div>
+          <div class="card-footer"><span class='image-description'>{{ submission.message }}</span></div>
         </div>
-        {% endfor %}
       </div>
+      {% endfor %}
     </div>
   </div>
+</div>
 
-  <!-- Footer -->
-  <footer class="footer p-1 text-center">
-    <div class="container text-center footer-container">
-        <div class="row d-flex align-items-center">
-
-            <div class="col-3">
-                <div class="settings-icon want-to-invert" onclick="openSettingsTab()">
-                  <i class="fas fa-cog " style="color: #000000;"></i>
-                </div>
-                <div id="settings-tab" class="settings-tab want-to-invert">
-                      <input type="range" min="1" max="3" value="1" class="slider" id="myRange">
-                      <input type="range" min="1" max="2" value="1" class="slider" id="myRangeTheme">
-                </div>
-            </div>
-
-            <div class="col-6 p-0">
-                <span>2023 Finish the Drawing ©</span>
-            </div>
-
-            <div class="col-3 d-flex justify-content-end">
-                <div class="email-icon want-to-invert" onclick="openEmailTab()">
-                    <i class="fa-regular fa-envelope fa-lg" style="color: #000000;"></i>
-                </div>
-                <div id="email-tab" class="email-tab want-to-invert">
-                    <span>finishthedrawing.contact@gmail.com</span>
-                </div>
-            </div>
-
-        </div>
-    </div>
-  </footer>
 
 
 </div>
+
+{% endblock %}
   
   
+{% block scripts %}
 
-<!--Slider-->
-<script>
-  // emotion
-  const slide = document.getElementById('myRange');
-  var imageUrl = "url('happy.png')";
-  document.documentElement.style.setProperty('--dynamicImage', imageUrl);
+  <!-- Voting -->
+  <script>
+    function toggleStar(icon, id) {
+      icon.classList.toggle("text-gray");
+      icon.classList.toggle("text-warning");
 
-  slide.addEventListener('input', function() {
+  
+      // Create a form and append the image data
+      var form = document.createElement('form');
+      form.action = '/vote';
+      form.method = 'POST';
+      // form.enctype = 'multipart/form-data'; // Set the enctype attribute
+  
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'id';
+      input.value = id;
+  
+      form.appendChild(input);
+      document.body.appendChild(form);
+  
+      // Submit the form
+      form.submit();
 
-    switch (this.value) {
-      case '1':
-        imageUrl = "url('happy.png')";
-        break;
-      case '2':
-        imageUrl = "url('neutral.png')";
-        break;
-      case '3':
-        imageUrl = "url('sad.png')";
-        break;
+    }
+  </script>
+
+  <!-- SHRINK TEXT TO FIT -->
+  <script>
+    // make it fit inside footer by shrikning font size
+    function shrinkTextToFit(element) {
+      const maxFontSize = 12; // Maximum font size in pixels
+      const minFontSize = 10; // Minimum font size in pixels
+
+      let fontSize = maxFontSize;
+      element.style.fontSize = fontSize + "px";
+    
+      while (element.scrollHeight > element.offsetHeight && fontSize > minFontSize) {
+        fontSize--;
+        element.style.fontSize = fontSize + "px";
+      }
+    
+      // Check if the text still overflows after reducing the font size
+      if (element.scrollWidth > element.offsetWidth) {
+        const scaleFactor = element.offsetWidth / element.scrollWidth;
+        fontSize = Math.floor(fontSize * scaleFactor);
+        element.style.fontSize = fontSize + "px";
+      }
     }
 
-    document.documentElement.style.setProperty('--dynamicImage', imageUrl);
+    //shrink footer text to fit
+    const cardFooters = document.getElementsByClassName("card-footer");
     // Set random descriptions for each span element
-    for (let i = 0; i < spanElements.length; i++) {
-      spanElements[i].textContent = getRandomDescription(this.value);
-    }
     for (let i = 0; i < cardFooters.length; i++) {
       shrinkTextToFit(cardFooters[i]);
     }
-  });
 
-  // theme
-  const slideTheme = document.getElementById('myRangeTheme');
-  slideTheme.addEventListener('input', function() {
-    
-    var element = document.body;
-    element.classList.toggle("dark-mode");
-
-    var element2 = document.getElementsByClassName('card-footer');
-    for (let i = 0; i < element2.length; i++) {
-      element2[i].classList.toggle("dark-mode");
-      element2[i].classList.toggle("dark-mode-box");
-    }
-
-    var element3 = document.getElementsByClassName('footer');
-    for (let i = 0; i < element3.length; i++) {
-      element3[i].classList.toggle("dark-mode");
-      element3[i].classList.toggle("dark-mode-box");
-    }
-
-    var element4 = document.getElementsByClassName('want-to-invert');
-    for (let i = 0; i < element4.length; i++) {
-      element4[i].classList.toggle("inverted-color");
-    }
-  });
-
-  function openSettingsTab() {
-    var settingsTab = document.getElementById('settings-tab');
-    if (settingsTab.style.display === '' || settingsTab.style.display === 'none') {
-      settingsTab.style.display = 'block';
-    } else {
-      settingsTab.style.display = 'none';
-    }
-  }
-
-  function openEmailTab(){
-    var emailTab = document.getElementById('email-tab');
-    if (emailTab.style.display === '' || emailTab.style.display === 'none') {
-      emailTab.style.display = 'block';
-    } else {
-      emailTab.style.display = 'none';
-    }
-  }
-  
-</script>
-
-<!-- Voting -->
-<script>
-  function toggleStar(icon, image) {
-    icon.classList.toggle("text-gray");
-    icon.classList.toggle("text-warning");
-
-    // Get the number element
-    var numberElement = icon.nextElementSibling;
-
-    // Get the current number value
-    var numberValue = parseInt(numberElement.textContent);
-
-    // Set the vote value based on the star's color
-    var vote = icon.classList.contains("text-warning") ? "up" : "down";
-
-    // Send a message to /vote endpoint
-    fetch('/vote', {
-      method: 'POST',
-      body: JSON.stringify({ vote: vote, image: image }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      // Update the number value based on the response
-      if (data.vote === "up") {
-        numberValue++;
-      } else if (data.vote === "down") {
-        numberValue--;
-      }
-
-      // Update the number element with the new value
-      numberElement.textContent = numberValue;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-  }
-</script>
-
-<!-- Random image description -->
-<script>
-  // Array of snarky, sarcastic, and passive-aggressive image descriptions
-  const descriptionsNegative = [
-    "Wow, what a masterpiece... if you're into that sort of thing.",
-    "Great job capturing the essence of mundanity.",
-    "Another picture that exists, how fascinating.",
-    "Just when I thought I couldn't be less impressed...",
-    "Oh, look, more mediocrity.",
-    "Well, isn't this just a thrilling image...",
-    "Congratulations, you've successfully documented nothing special.",
-    "I'm sure someone, somewhere might find this interesting... maybe.",
-    "Just when I thought my eyes couldn't roll any harder...",
-    "Yet another breathtakingly average picture.",
-    "Oh, the sheer brilliance of this... *insert eye roll*",
-    "A picture that makes me question my life choices.",
-    "You've managed to capture the essence of 'meh'.",
-    "I suppose this passes for creativity in some alternate universe.",
-    "And here we have yet another disappointment.",
-    "Well, this certainly won't be winning any awards.",
-    "I've seen more captivating images on a blank canvas.",
-    "Your ability to capture the mundane is truly remarkable... or not.",
-    "Just what the world needed, another forgettable image.",
-    "If you were aiming for underwhelming, you've succeeded.",
-    "I must say, the banality is astounding.",
-    "Yet another gem in the realm of unremarkable photography.",
-    "If mediocrity had an image, this would be it.",
-    "Well, it's certainly a picture... no denying that.",
-    "The profoundness of this image is truly overwhelming... or not.",
-    "If only I could unsee this image...",
-    "What a time to be alive... and witness such a lackluster photo.",
-    "A picture that's just as underwhelming as it seemed it would be.",
-    "Well, that's... something, I guess.",
-    "Congratulations on capturing the epitome of averageness.",
-    "I can only imagine the multitude of emotions this image invokes... actually, no I can't.",
-    "Another day, another uninspiring image.",
-    "It's truly remarkable how unremarkable this image is.",
-    "This image redefines the term 'profoundly unimpressive'.",
-    "Yet another shining example of blandness.",
-    "Well, this certainly won't be remembered for its originality.",
-    "If monotony had a face, this would be it.",
-    "I have to admire your dedication to capturing the mundane.",
-    "Oh look, it's a picture. How... fascinating.",
-    "Behold, a masterpiece of mediocrity.",
-    "The sheer genius of this image is absolutely underwhelming.",
-    "I'm trying to come up with something nice to say, but...",
-    "Another day, another forgettable image in the annals of history.",
-    "And here we have a breathtaking example of ordinary.",
-    "I'm truly awe-struck by the unimpressiveness of this image.",
-    "Well, this certainly isn't going to break the internet.",
-    "If you were aiming for indifference, you've achieved it.",
-    "Just when I thought I couldn't be less interested...",
-    "I must commend your commitment to capturing the banal.",
-    "If this image were any blander, it would be invisible.",
-    "What a remarkable display of mundanity.",
-    "And here I thought I'd never see another unexceptional photo.",
-    "I'm genuinely unimpressed by the effort put into this image.",
-  ];
-
-  const descriptionsNeutral = [
-    "This image presents an interesting perspective worth considering.",
-    "A composition that invites contemplation and interpretation.",
-    "A balanced portrayal that leaves room for individual interpretation.",
-    "This picture captures a moment of quiet introspection.",
-    "A subtle display of colors and textures that engage the senses.",
-    "A composition that encourages viewers to form their own opinions.",
-    "An image that sparks curiosity and encourages exploration.",
-    "This photo presents a unique viewpoint on the subject.",
-    "A snapshot that captures the essence of a particular moment.",
-    "A visual representation that prompts reflection and introspection.",
-    "This picture provides a glimpse into the intricacies of everyday life.",
-    "A composition that elicits a sense of curiosity and intrigue.",
-    "An image that allows viewers to find their own meaning within.",
-    "This photo captures a fleeting moment in a thought-provoking manner.",
-    "A portrayal that invites viewers to discover their own narrative.",
-    "A snapshot that captures the ordinary in an unexpected way.",
-    "This picture presents a scene open to individual interpretation.",
-    "A composition that invites viewers to delve into their own emotions.",
-    "An image that presents a different perspective on the subject.",
-    "This photo captures the essence of the subject with simplicity.",
-    "A portrayal that sparks a sense of curiosity and contemplation.",
-    "A snapshot that encourages viewers to find beauty in the mundane.",
-    "This picture offers a glimpse into a world waiting to be explored.",
-    "A composition that challenges conventional notions of beauty.",
-    "An image that prompts viewers to question their own perceptions.",
-    "This photo captures a fleeting moment with quiet observation.",
-    "A portrayal that allows space for personal interpretation.",
-    "A snapshot that captures the essence of the subject with subtlety.",
-    "This picture presents a scene that invites viewers to ponder.",
-    "A composition that evokes a sense of intrigue and mystery.",
-    "An image that encourages viewers to look beyond the surface.",
-    "This photo captures a fleeting moment open to interpretation.",
-    "A portrayal that leaves room for viewers to project their own thoughts.",
-    "A snapshot that captures the nuances of everyday life.",
-    "This picture presents a scene that sparks intellectual curiosity.",
-    "A composition that invites viewers to explore the details.",
-    "An image that captures the subject with a neutral perspective.",
-    "This photo portrays a moment that allows for personal reflection.",
-    "A portrayal that prompts viewers to form their own connections.",
-    "A snapshot that captures a slice of ordinary existence.",
-    "This picture presents a scene that allows for multiple interpretations.",
-    "A composition that stimulates the imagination without bias.",
-    "An image that presents the subject with neutrality and detachment.",
-    "This photo captures a fleeting moment with impartial observation.",
-    "A portrayal that invites viewers to find their own narrative.",
-    "A snapshot that captures the simplicity of the subject.",
-    "This picture offers a glimpse into the subtle beauty of everyday life.",
-    "A composition that allows viewers to form their own conclusions.",
-    "An image that prompts viewers to embrace ambiguity and uncertainty.",
-    "This photo captures a fleeting moment that raises questions.",
-    "A portrayal that leaves room for viewers to find their own meaning."
-  ];
+  </script>
 
 
-  const descriptionsPositive = [
-    "This image radiates joy and happiness.",
-    "A stunning display of beauty that leaves me in awe.",
-    "An enchanting image that captures the essence of wonder.",
-    "This picture is a true masterpiece, filled with vibrant colors.",
-    "A captivating scene that evokes a sense of serenity and peace.",
-    "Pure elegance portrayed in this stunning composition.",
-    "A delightful image that brings a smile to my face.",
-    "A remarkable display of creativity and imagination.",
-    "This image shines with a brilliance that cannot be ignored.",
-    "A breathtaking moment frozen in time, filled with magic.",
-    "A perfect blend of harmony and grace in this captivating photo.",
-    "An extraordinary image that sparks the imagination.",
-    "This picture is a true work of art, deserving of praise.",
-    "A heartwarming scene that fills me with joy and warmth.",
-    "A mesmerizing view that takes my breath away.",
-    "A remarkable display of talent and skill in this image.",
-    "This photo is a testament to the beauty of life.",
-    "An uplifting image that fills my heart with positivity.",
-    "A dazzling display of light and color that enchants the senses.",
-    "This picture captures the essence of bliss and contentment.",
-    "A radiant scene that fills me with a sense of awe.",
-    "An inspiring image that sparks creativity and imagination.",
-    "This photo is a celebration of life's simple pleasures.",
-    "A mesmerizing view that invites me to explore and dream.",
-    "A captivating moment captured in this extraordinary image.",
-    "This picture is a true reflection of happiness and joy.",
-    "A masterpiece of photography that leaves me speechless.",
-    "An enchanting scene that transports me to another world.",
-    "This image is a true treasure, radiating beauty and grace.",
-    "A stunning display of nature's splendor, captured perfectly.",
-    "A delightful image that fills me with a sense of wonder.",
-    "A magical moment frozen in time, capturing the extraordinary.",
-    "This picture is a testament to the beauty that surrounds us.",
-    "An uplifting scene that brings a sense of peace and tranquility.",
-    "A dazzling display of creativity and artistry in this photo.",
-    "This image evokes a feeling of serenity and harmony.",
-    "A radiant view that ignites the imagination and inspires.",
-    "An inspiring image that celebrates the beauty of life.",
-    "This photo is a true masterpiece, filled with emotion.",
-    "A mesmerizing sight that leaves me in awe of the world.",
-    "A captivating scene that stirs the soul and sparks joy.",
-    "This picture is a true reflection of the wonders of nature.",
-    "A remarkable display of skill and talent in this stunning image.",
-    "An enchanting view that fills me with a sense of wonder.",
-    "A joyful moment frozen in time, capturing pure happiness.",
-    "This image is a testament to the power of love and connection.",
-    "A stunning display of light and beauty that captivates.",
-    "A delightful image that brings a sense of serenity and calm.",
-    "A magical scene that transports me to a world of dreams.",
-    "This picture is a true masterpiece, capturing the extraordinary."
-  ];
+{% endblock %}
 
-  // Dont repeat descriptions
-  const chosen_descriptions = [];
-  // Function to generate a random description without duplicates
-  function getRandomDescription(value) {
-    var emotion;
-    switch (value) {
-      case '1':
-        emotion = descriptionsPositive;
-        break;
-      case '2':
-        emotion = descriptionsNeutral;
-        break;
-      case '3':
-        emotion = descriptionsNegative;
-        break;
-    }
-
-    if (chosen_descriptions.length === emotion.length) {
-      chosen_descriptions.length = 0; // Reset the array if all descriptions have been used
-    }
-
-    let randomIndex;
-    let choice;
-    do {
-      randomIndex = Math.floor(Math.random() * emotion.length);
-      choice = emotion[randomIndex];
-    } while (chosen_descriptions.includes(choice));
-
-    chosen_descriptions.push(choice); // Add the chosen description to the array
-    return '"' + choice + '"';
-  }
-
-  // Get all the elements with the class 'image-description'
-  const spanElements = document.getElementsByClassName('image-description');
-
-  // Set random descriptions for each span element
-  for (let i = 0; i < spanElements.length; i++) {
-    spanElements[i].textContent = getRandomDescription('1');
-  }
-
-  // make it fit inside footer by shrikning font size
-  function shrinkTextToFit(element) {
-    const maxFontSize = 15; // Maximum font size in pixels
-    const minFontSize = 12; // Minimum font size in pixels
-
-    let fontSize = maxFontSize;
-    element.style.fontSize = fontSize + "px";
-  
-    while (element.scrollHeight > element.offsetHeight && fontSize > minFontSize) {
-      fontSize--;
-      element.style.fontSize = fontSize + "px";
-    }
-  
-    // Check if the text still overflows after reducing the font size
-    if (element.scrollWidth > element.offsetWidth) {
-      const scaleFactor = element.offsetWidth / element.scrollWidth;
-      fontSize = Math.floor(fontSize * scaleFactor);
-      element.style.fontSize = fontSize + "px";
-    }
-  }
-
-  //shrink footer text to fit
-  const cardFooters = document.getElementsByClassName("card-footer");
-  // Set random descriptions for each span element
-  for (let i = 0; i < cardFooters.length; i++) {
-    shrinkTextToFit(cardFooters[i]);
-  }
-
-</script>
-
-<!-- Imported JS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
-</body>
-</html>

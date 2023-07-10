@@ -1,7 +1,7 @@
 {
     "name": "Finish the Drawing",
     "short_name": "DrawOff",
-    "description": "Daily Drawing Competitions",
+    "description": "Daily challenges to finish the drawing!",
     "icons": [
       { "src": "/static/media/.ico", "type": "image/x-icon", "sizes": "16x16 32x32" },
       { "src": "/static/media/icon-192.png", "type": "image/png", "sizes": "192x192" },

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<meta charset="UTF-8">
+<head>
+
+    <!-- TITLE -->
+    <title>Finish the Drawing!</title>
+
+    <!-- ICONS -->
+    <link rel="icon" href="{{ url_for('static', filename='media/favicon.ico') }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='media/apple-touch-icon.png') }}">
+
+    <!-- STYLING  -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- MANIFEST -->
+   {% block manifest %}{% endblock %}
+
+    <!-- META -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#161616">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Daily challenges to finish the drawing!">
+
+    <!-- SCRIPTS -->
+    <script src="https://kit.fontawesome.com/aa13770cf3.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+{% block content %}
+
+{% endblock %}
+
+
+<!-- Footer -->
+<footer class="footer p-1 text-center">
+    <div class="container-fluid text-center footer-container">
+      <div class="row d-flex align-items-center no-gutters">
+        <div class="col-auto mr-2">
+          <div class="settings-icon want-to-invert" onclick="openSettingsTab()">
+            <i class="fas fa-cog" style="color: #000000;"></i>
+          </div>
+          <div id="settings-tab" class="settings-tab want-to-invert">
+            <input type="range" min="1" max="2" value="1" class="slider" id="myRangeTheme">
+          </div>
+        </div>
+  
+        <div class="col-auto mr-2">
+          <div class="email-icon want-to-invert" onclick="openEmailTab()">
+            <i class="fa-regular fa-envelope fa-lg" style="color: #000000; padding-top: 13px"></i>
+          </div>
+          <div id="email-tab" class="email-tab want-to-invert">
+            <span class='want-to-invert'>finishthedrawing.contact@gmail.com</span>
+          </div>
+        </div>
+  
+        <div class="col-auto">
+          <div class="email-icon want-to-invert" style="color: #000000; padding-top: 6px" onclick="home()">
+                <i class="fa-solid fa-house"></i>
+            </div>
+        </div>
+  
+        <div class="col ms-auto">
+          <span style="text-align: end; padding-right: 3%">  2023 Finish the Drawing © </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  
+
+{% block scripts %}
+
+{% endblock %}
+
+<!--Slider-->
+<script>
+    // EMOTION SLIDER
+    /*
+    const slide = document.getElementById('myRange');
+    var imageUrl = "url('happy.png')";
+    document.documentElement.style.setProperty('--dynamicImage', imageUrl);
+  
+    slide.addEventListener('input', function() {
+  
+      switch (this.value) {
+        case '1':
+          imageUrl = "url('happy.png')";
+          break;
+        case '2':
+          imageUrl = "url('neutral.png')";
+          break;
+        case '3':
+          imageUrl = "url('sad.png')";
+          break;
+      }
+  
+      document.documentElement.style.setProperty('--dynamicImage', imageUrl);
+      // Set random descriptions for each span element
+      for (let i = 0; i < spanElements.length; i++) {
+        spanElements[i].textContent = getRandomDescription(this.value);
+      }
+      for (let i = 0; i < cardFooters.length; i++) {
+        shrinkTextToFit(cardFooters[i]);
+      }
+    });
+    */
+  
+    // theme
+    const slideTheme = document.getElementById('myRangeTheme');
+    slideTheme.addEventListener('input', function() {
+
+        console.log('Changing Theme')
+      
+        var element = document.body;
+        element.classList.toggle("dark-mode");
+
+        var element2 = document.getElementsByClassName('card-footer');
+        for (let i = 0; i < element2.length; i++) {
+        element2[i].classList.toggle("dark-mode");
+        element2[i].classList.toggle("dark-mode-box");
+        }
+
+        var element3 = document.getElementsByClassName('footer');
+        for (let i = 0; i < element3.length; i++) {
+        element3[i].classList.toggle("dark-mode");
+        element3[i].classList.toggle("dark-mode-box");
+        }
+
+        var element3 = document.getElementsByClassName('podium');
+        for (let i = 0; i < element3.length; i++) {
+        element3[i].classList.toggle("dark-mode");
+        element3[i].classList.toggle("dark-mode-box");
+        }
+
+        var element4 = document.getElementsByClassName('want-to-invert');
+        for (let i = 0; i < element4.length; i++) {
+        element4[i].classList.toggle("inverted-color");
+        }
+
+        var element5 = document.getElementsByClassName('button-container');
+        for (let i = 0; i < element5.length; i++) {
+        element5[i].classList.toggle("dark-mode");
+        element5[i].classList.toggle("dark-mode-box");
+        }
+  
+    });
+  
+    function openSettingsTab() {
+      var settingsTab = document.getElementById('settings-tab');
+      if (settingsTab.style.display === '' || settingsTab.style.display === 'none') {
+        settingsTab.style.display = 'block';
+      } else {
+        settingsTab.style.display = 'none';
+      }
+    }
+  
+    function openEmailTab(){
+      var emailTab = document.getElementById('email-tab');
+      if (emailTab.style.display === '' || emailTab.style.display === 'none') {
+        emailTab.style.display = 'block';
+      } else {
+        emailTab.style.display = 'none';
+      }
+    }
+
+    function home(){
+        window.location.href = "/";
+    }   
+    
+</script>
+
+<!-- IMPORTED JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+
+
+</body>
+</html>
