@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, render_template, request, send_from_directory, redirect, url_for, g, Response, make_response, session
-import nltk
-from nltk.corpus import wordnet
+# import nltk
+from nltk.corpus import wordnet, wordnet_ic
 from datetime import date, datetime, timedelta
 import random
 import base64
@@ -13,18 +13,13 @@ import db_config
 ''' ---------------------------- PREAMBLE ---------------------------- '''
 
 # Download NLTK data for NOUNS
-nltk.download('wordnet')
+# nltk.download('wordnet')
+# nltk.download('wordnet_ic')
 
 # Specify the time zone
 timezone = pytz.timezone('America/New_York')
 
-# Get the current date and time
-today = datetime.now(timezone)
-# Get the current date
-today = today.date()
-# Get tomorrow's date
-tomorrow = today + timedelta(days=1)
-print("Tomorrow's date:", tomorrow)
+word_of_the_day = ''
 
 # Set up Flask app
 app = Flask(__name__)
@@ -86,35 +81,38 @@ def index():
     # Set a seed for consistent random noun each day
     current_date = current_time.date()
     
-    # get tomorrow
-    global tomorrow
-    print("Todays's date:", current_date)
-    print("Tomorrow's date:", tomorrow)
-    
-    # Compare if the current time has reached tomorrow
-    if current_date >= tomorrow:
-        # The current time has reached tomorrow
-        print("tomorrow has arrived, wiping files and DB")
-        wipe()
-        tomorrow = current_date + timedelta(days=1)
-        
     
     # set seed for today
     seed = current_date.year * 10000 + current_date.month * 100 + current_date.day
     random.seed(seed)
 
-    # Retrieve a random noun
-    synsets = list(wordnet.all_synsets(wordnet.NOUN))
-    random.shuffle(synsets)
-    random_noun = synsets[0].lemmas()[0].name()
+    # Get all noun synsets
+    # noun_synsets = list(wordnet.all_synsets(wordnet.NOUN))
+
+    # Calculate the relevance scores for each synset
+    # synset_scores = [(synset, synset.wup_similarity(wordnet.synsets('entity')[0])) for synset in noun_synsets]
+
+    # Sort the synsets based on their relevance scores in descending order
+    # sorted_synsets = sorted(synset_scores, key=lambda x: x[1], reverse=True)
+
+    # Get a random noun
+    # random_noun = random.choice(sorted_synsets)[0].lemmas()[0].name()
 
     # Clean up the noun
-    random_noun = random_noun.replace("_", " ").title()
+    # random_noun = random_noun.replace("_", " ").title()
     
-    print("Random Noun of the Day:", random_noun)
+    with open('words.txt', 'r') as file:
+        word_list = file.read().split(',')
+        
+    random_word = random.choice(word_list)
+    random_word = random_word.replace(" ", "").title()
     
+    print("Random Noun of the Day:", random_word)
+    
+    global word_of_the_day
+    word_of_the_day = random_word    
 
-    return render_template('index.html', word=random_noun, seed=seed)
+    return render_template('index.html', word=random_word, seed=seed)
 
 
 ''' ---------------------------- SUBMIT, VOTE AND VIEW ROUTES ---------------------------- '''
@@ -164,7 +162,9 @@ def submit():
     id = filename[:-4]
     votes = 0
     message = request.form['comment']
-    db_config.create_entry(id, image_url, votes, message)
+    global word_of_the_day
+    word = word_of_the_day
+    db_config.create_entry(id, image_url, votes, message, word)
     
     response = redirect(url_for("view"))
     response.set_cookie('voted_image', '0')
@@ -217,6 +217,10 @@ def view():
     
     # Retrieve all image data from the database
     submissions = db_config.select_all()
+    
+    for submission in submissions:
+        if submission[4] != word_of_the_day:
+            submissions.remove(submission)
     
     # Sort the submissions by vote
     submissions_sorted = sorted(submissions, key=lambda x: x[2], reverse=True)
