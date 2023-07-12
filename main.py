@@ -19,8 +19,6 @@ import db_config
 # Specify the time zone
 timezone = pytz.timezone('America/New_York')
 
-word_of_the_day = ''
-
 # Set up Flask app
 app = Flask(__name__)
 
@@ -66,9 +64,8 @@ def serve_worker():
 
 ''' ---------------------------- INDEX ---------------------------- '''
 
-# book selection page
-@app.route('/')
-def index():
+# obtain word of the day
+def get_daily_word_and_seed():
     
     # RETRIEVE DAILY NOUN ------------
     
@@ -81,25 +78,9 @@ def index():
     # Set a seed for consistent random noun each day
     current_date = current_time.date()
     
-    
-    # set seed for today
+        # set seed for today
     seed = current_date.year * 10000 + current_date.month * 100 + current_date.day
     random.seed(seed)
-
-    # Get all noun synsets
-    # noun_synsets = list(wordnet.all_synsets(wordnet.NOUN))
-
-    # Calculate the relevance scores for each synset
-    # synset_scores = [(synset, synset.wup_similarity(wordnet.synsets('entity')[0])) for synset in noun_synsets]
-
-    # Sort the synsets based on their relevance scores in descending order
-    # sorted_synsets = sorted(synset_scores, key=lambda x: x[1], reverse=True)
-
-    # Get a random noun
-    # random_noun = random.choice(sorted_synsets)[0].lemmas()[0].name()
-
-    # Clean up the noun
-    # random_noun = random_noun.replace("_", " ").title()
     
     with open('words.txt', 'r') as file:
         word_list = file.read().split(',')
@@ -107,10 +88,18 @@ def index():
     random_word = random.choice(word_list)
     random_word = random_word.replace(" ", "").title()
     
-    print("Random Noun of the Day:", random_word)
+    print("Random Noun of the Day:", random_word) 
     
-    global word_of_the_day
-    word_of_the_day = random_word    
+    return random_word, seed
+
+
+
+# index
+@app.route('/')
+def index():
+    
+    # Get the daily word and seed
+    random_word, seed = get_daily_word_and_seed()
 
     return render_template('index.html', word=random_word, seed=seed)
 
@@ -162,9 +151,11 @@ def submit():
     id = filename[:-4]
     votes = 0
     message = request.form['comment']
-    global word_of_the_day
-    word = word_of_the_day
-    db_config.create_entry(id, image_url, votes, message, word)
+    
+    # Get the daily word and seed
+    random_word, seed = get_daily_word_and_seed()
+
+    db_config.create_entry(id, image_url, votes, message, random_word)
     
     response = redirect(url_for("view"))
     response.set_cookie('voted_image', '0')
@@ -215,12 +206,12 @@ def print_session_cookie():
 @app.route('/view')
 def view():
     
-    # Retrieve all image data from the database
-    submissions = db_config.select_all()
+    random_word, seed = get_daily_word_and_seed()
     
-    for submission in submissions:
-        if submission[4] != word_of_the_day:
-            submissions.remove(submission)
+    print('viewing images with word: ', random_word)
+    
+    # Retrieve all image data from the database
+    submissions = db_config.select_all(random_word)
     
     # Sort the submissions by vote
     submissions_sorted = sorted(submissions, key=lambda x: x[2], reverse=True)
@@ -229,6 +220,14 @@ def view():
 
     return render_template('submissions.html', submissions=submissions_sorted)
 
+
+''' ---------------------------- pp ---------------------------- '''
+
+# Handle the /view route
+@app.route('/privacy')
+def privacy():
+
+    return render_template('privacy.html')
 
 
 ''' ---------------------------- Entry ---------------------------- '''

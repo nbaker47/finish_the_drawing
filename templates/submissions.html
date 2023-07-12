@@ -30,6 +30,8 @@
                 {% if request.cookies.get('voted_image') %}
                   {% if submission.id not in request.cookies.get('voted_image') %} onclick="toggleStar(this, '{{ submission.id }}')"  {% endif %} 
                   {% if submission.id in request.cookies.get('voted_image') %} style="color: gold;" {% endif %}
+                {% else %}
+                  onclick="noSubmission()"
                 {% endif %}
               > {{ submission.votes }}  
               </i>
@@ -78,6 +80,11 @@
       form.submit();
 
     }
+
+    function noSubmission() {
+      alert("You can't vote unless you submit a drawing!");
+    }
+
   </script>
 
   <!-- SHRINK TEXT TO FIT -->

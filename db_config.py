@@ -63,12 +63,14 @@ def create_entry(id, image, votes, message, word):
         #    print(row)
 
 # function to create entry in database
-def select_all():
+def select_all(word):
+    
+    print(word)
     
     with pool.connect() as db_conn:
 
         # query database
-        result = db_conn.execute(sqlalchemy.text("SELECT * from drawing_data")).fetchall()
+        result = db_conn.execute(sqlalchemy.text("SELECT * from drawing_data WHERE word = :word"), {'word' : word}).fetchall()
 
         # commit transaction (SQLAlchemy v2.X.X is commit as you go)
         db_conn.commit()
