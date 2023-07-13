@@ -64,8 +64,10 @@
 <footer class="footer p-1 text-center">
     <div class="container-fluid text-center footer-container">
       <div class="row d-flex align-items-center no-gutters">
+
+        <!-- COG -->
         <div class="col-auto mr-2">
-          <div class="settings-icon want-to-invert" onclick="openSettingsTab()">
+          <div class="settings-icon want-to-invert icon" onclick="openSettingsTab()">
             <i class="fas fa-cog" style="color: #000000;"></i>
           </div>
           <div id="settings-tab" class="settings-tab want-to-invert">
@@ -73,19 +75,36 @@
           </div>
         </div>
 
+        <!-- HOME -->
+        <div class="col-auto mr-2">
+          <div class="email-icon want-to-invert icon" style="color: #000000;" onclick="home()">
+              <i class="fa fa-house"></i>
+            </div>
+        </div>
         
+
+        <!-- VIEW -->
         <div class="col-auto mr-2">
           <div class="email-icon want-to-invert icon" style="color: #000000;" onclick="view()">
             <i class="fa-regular fa-eye"></i>
           </div>
         </div>
-  
-        <div class="col-auto">
-          <div class="email-icon want-to-invert icon" style="color: #000000;" onclick="home()">
-                <i class="fa-solid fa-house"></i>
-            </div>
+
+        <!-- USER -->
+        <div class="col-auto mr-2">
+          <div class="email-icon want-to-invert icon" style="color: #000000;" onclick="select()">
+            <i class="fa-regular fa-user"></i>
+          </div>
         </div>
-  
+
+        <!-- USER -->
+        <div class="col-auto mr-2">
+          <div class="" style="color: #000000;" onclick="">
+            {{ current_user.username }}
+          </div>
+        </div>
+
+        <!-- COPYRIGHT -->
         <div class="col ms-auto">
           <span style="text-align: end; padding-right: 3%">  2023 Finish the Drawing © <br> finishthedrawing.contact@gmail.com </span>
         </div>
@@ -197,7 +216,12 @@
     function view(){
         window.location.href = "/view";
     }   
-    
+
+
+    function select(){
+      window.location.href = "/select";
+    }   
+  
 </script>
 
 <!-- IMPORTED JS -->

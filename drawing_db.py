@@ -23,44 +23,22 @@ pool = sqlalchemy.create_engine(
     
 )
 
-# create table
-create_stmt = sqlalchemy.text(
-    "CREATE TABLE IF NOT EXISTS drawing_data (id VARCHAR(255) PRIMARY KEY, image VARCHAR(255), votes INT, message VARCHAR(255), word VARCHAR(255))"
-)
-
-# delete table
-drop_stmt = sqlalchemy.text(
-    "DROP TABLE drawing_data"
-)
-
-# wipe table
-wipe_stmt = sqlalchemy.text(
-    "DELETE FROM drawing_data"
-)
-
-# insert statement
-insert_stmt = sqlalchemy.text(
-    "INSERT INTO drawing_data (id, image, votes, message, word) VALUES (:id, :image, :votes, :message, :word)",
-)
 
 # function to create entry in database
-def create_entry(id, image, votes, message, word):
+def create_entry(id, image, votes, message, word, user):
     
+    # insert statement
+    insert_stmt = sqlalchemy.text(
+        "INSERT INTO drawing_data (id, image, votes, message, word, user) VALUES (:id, :image, :votes, :message, :word, :user)",
+    )
+
     with pool.connect() as db_conn:
         
         # insert into database
         db_conn.execute(insert_stmt, parameters={"id": id, "image": image,
-                                                 "votes": votes, "message": message, 'word': word})
+                                                 "votes": votes, "message": message, 'word': word, 'user': user})
 
-        # query database
-        # result = db_conn.execute(sqlalchemy.text("SELECT * from drawing_data")).fetchall()
-
-        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
         db_conn.commit()
-
-        # Do something with the results
-        #for row in result:
-        #    print(row)
 
 # function to create entry in database
 def select_all(word):
@@ -84,6 +62,11 @@ def select_all(word):
 # function to wipe table
 def wipe_table():
     
+    # wipe table
+    wipe_stmt = sqlalchemy.text(
+        "DELETE FROM drawing_data"
+    )
+    
     with pool.connect() as db_conn:
         
         # wipe table
@@ -94,6 +77,11 @@ def wipe_table():
         
 # function to drop table
 def drop_table():
+    
+    # delete table
+    drop_stmt = sqlalchemy.text(
+        "DROP TABLE drawing_data"
+    )
     
     with pool.connect() as db_conn:
         
@@ -106,6 +94,11 @@ def drop_table():
 # function to create table
 def create_table():
     
+    # create table
+    create_stmt = sqlalchemy.text(
+        "CREATE TABLE IF NOT EXISTS drawing_data (id VARCHAR(255) PRIMARY KEY, image VARCHAR(255), votes INT, message VARCHAR(255), word VARCHAR(255), user VARCHAR(255) )"
+    )
+    
     with pool.connect() as db_conn:
         
         # wipe table
@@ -114,7 +107,6 @@ def create_table():
         # commit transaction (SQLAlchemy v2.X.X is commit as you go)
         db_conn.commit()
 
-        
 # function to vote
 def vote(id):
     # vote statement
@@ -140,3 +132,4 @@ def vote(id):
         updated_row = result.fetchone()
         
         # print(updated_row)
+

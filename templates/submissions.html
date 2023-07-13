@@ -4,50 +4,67 @@
 {% block content %}
 
 <!-- Title and Content -->
-<div class='master-container'>
-  <!-- Title -->
-  <div class="text-center custom-title fade-in">
-      <p class='h2 font-weight-bolder'> Today's Submissions </p>
-  </div>
+<div class=''>
+  <div class='master-container'>
+    <!-- Title -->
+    <div class="text-center custom-title fade-in">
+        <p class='h2 font-weight-bolder'> Today's Submissions </p>
+    </div>
   
-<!-- Submissions -->
-<div class="custom-div fade-in text-center fade-in" id="books" style='margin-bottom:80px'>
-  <div class="container">
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-      {% for submission in submissions %}
-      <div class="col-md-3 my-3">
-        <div class="card  {% if loop.index0 == 0 %}first-card{% endif %} {% if loop.index0 == 1 %}second-card{% endif %} {% if loop.index0 == 2 %}third-card{% endif %}">
-          {% if loop.index0 < 3 %}
-          <div class='podium'>  
-            {% if loop.index0 == 0 %} <i class="fa-solid fa-trophy" style="color: #ffc800;"></i>{% endif %}
-            {% if loop.index0 == 1 %} <i class="fa-solid fa-trophy" style="color: silver"></i> {% endif %}
-            {% if loop.index0 == 2 %} <i class="fa-solid fa-trophy" style="color: #cd7f32;"></i> {% endif %} 
-          </div>
-          {% endif %}
-          <div class="card-body want-to-invert">
-            <div class="star-icon"> 
-              <i class="bi bi-star-fill"
-                {% if request.cookies.get('voted_image') %}
-                  {% if submission.id not in request.cookies.get('voted_image') %} onclick="toggleStar(this, '{{ submission.id }}')"  {% endif %} 
-                  {% if submission.id in request.cookies.get('voted_image') %} style="color: gold;" {% endif %}
-                {% else %}
-                  onclick="noSubmission()"
-                {% endif %}
-              > {{ submission.votes }}  
-              </i>
+  <!-- Submissions -->
+  <div class="custom-div fade-in text-center fade-in" id="books" style='margin-bottom:80px'>
+    <div class="container">
+      <div class="row gx-5">
+        {% for submission in submissions %}
+        <div class="col-md-3 my-3 mb-5 pr-4">
+          <div class="card  {% if loop.index0 == 0 %}first-card{% endif %} {% if loop.index0 == 1 %}second-card{% endif %} {% if loop.index0 == 2 %}third-card{% endif %}">
+            
+            <!-- Podium -->
+            {% if loop.index0 < 3 %}
+            <div class='podium'>
+              {% if loop.index0 == 0 %} <i class="fa-solid fa-trophy" style="color: #ffc800;"></i>{% endif %}
+              {% if loop.index0 == 1 %} <i class="fa-solid fa-trophy" style="color: silver"></i> {% endif %}
+              {% if loop.index0 == 2 %} <i class="fa-solid fa-trophy" style="color: #cd7f32;"></i> {% endif %}
             </div>
-            <img src="{{ submission.image }}" alt="Submission Image" class='submission-image'>
+            {% endif %}
+
+            <!-- Star & Body -->
+            <div class="card-body want-to-invert">
+              <div class="star-icon">
+                <i class="bi bi-star-fill"
+                  {% if request.cookies.get('voted_image') %}
+                    {% if submission.id not in request.cookies.get('voted_image') %} onclick="toggleStar(this, '{{ submission.id }}')"  {% endif %}
+                    {% if submission.id in request.cookies.get('voted_image') %} style="color: gold;" {% endif %}
+                  {% else %}
+                    onclick="noSubmission()"
+                  {% endif %}
+                > {{ submission.votes }}
+                </i>
+              </div>
+              <img src="{{ submission.image }}" alt="Submission Image" class='submission-image'>
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer"><span class='image-description'>{{ submission.message }}</span></div>
+            
+            {% if submission.user != 'Guest Drawer' %}
+            <!-- User Insert -->
+            <div class="user-insert want-to-invert">
+                <img src="{{ get_profile_pic(submission.user)[0] }}" class='rounded-circle shadow-4-strong' width='80px' height='80px'>
+                <span> {{ submission.user }} <span>
+            </div>
+            {% endif %}
+
           </div>
-          <div class="card-footer"><span class='image-description'>{{ submission.message }}</span></div>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
     </div>
   </div>
-</div>
-
-
-
+  
+  
+  
+  </div>
 </div>
 
 {% endblock %}

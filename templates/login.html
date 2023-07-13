@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class='login-back d-flex align-items-center min-vh-100 '>
+    
+        <div class="container text-center box-outline" style:'width:="" 400px="" !important;'="" style="width: 400px;">
+            <form class="form-signin" action="/verify-user" method="POST">
+
+            <img class="mb-4" src="{{ url_for('static', filename='media/icon-512.png') }}" alt="" width="72" height="72">
+
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+
+            {% if wrong_pass %}
+            <div class="alert alert-warning" role="alert">
+                Incorrect Login Credentials
+            </div>
+            {% endif %}
+
+            <label for="inputusername" class="sr-only">Username</label>
+            <input type="username" id="username" name='username' class="form-control" placeholder="Username" required autofocus>
+
+            <br>
+
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="password" name='password' class="form-control" placeholder="Password" required>
+
+            <br>
+                
+            <div class="checkbox mb-3">
+                <label>
+                <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            
+            <button class="btn btn-lg btn-info btn-block" onclick='select()'>Back</button>
+
+            <p class="mt-5 mb-3 text-muted">© Finish the Drawing 2023 </p>
+
+            </form>
+        </div>
+
+    
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function select(){
+        window.location.href = "/select";
+    }
+</script>
+{% endblock %}
