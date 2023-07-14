@@ -34,12 +34,24 @@
         <div class='bounce-in'>
           <span class=" emph-title">"{{word}}"</span>
         </div>
+        
     </div>
 
     <!-- Drawing interface -->
     <div class="text-center drawing-interface box-outline">  
 
       <div class='inner-interface '>
+
+        
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style container justify-content-center d-flex mb-1">
+          <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+          <a class="a2a_button_facebook"></a>
+          <a class="a2a_button_whatsapp"></a>
+          <a class="a2a_button_snapchat"></a>
+          </div>
+          <script async src="https://static.addtoany.com/menu/page.js"></script>
+          <!-- AddToAny END -->
 
         <!-- Canvas -->
         <canvas id="drawing-canvas"  class='want-to-invert'  width='320px' height='280px'></canvas>
@@ -53,7 +65,8 @@
             <button id="submit-button" class="btn mx-auto submit-button custom-button" onclick="submitDrawing()"> Submit </button>
           </div>
         </div>
-
+                
+        
       </div>
     </div>
 

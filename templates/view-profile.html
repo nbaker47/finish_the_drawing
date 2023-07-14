@@ -10,9 +10,25 @@
       <div class='col-auto mr-1 mb-3 text-center index-container align-items-center justify-content-center' style='height:fit-content;' >
       
       
-        <img class="mb-4" src="{{ view_user[2] }}" alt="" width="200px" height="200px" id='profile-pic' style='background-color:white;'>
-        <h1 class="custom-title">{{ view_user.username }}</h1>
-        <br>
+        <div class='row'>
+          <div class='col-12' style="width: 400px;">
+            <img class="mb-4" src="{{ view_user[2] }}" alt="" width="200px" height="200px" id='profile-pic' style='background-color:white;'>
+            <h1 class="custom-title">{{ view_user.username }}</h1>
+            <div class='bubblegum h3  '> {{ view_user[3] }} </div>
+          </div>
+              <!-- AddToAny BEGIN 
+          <div class="a2a_kit a2a_kit_size_32 a2a_default_style container justify-content-center d-flex mb-3">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_whatsapp"></a>
+            <a class="a2a_button_snapchat"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_sms"></a>
+            </div>
+            <script async src="https://static.addtoany.com/menu/page.js"></script>
+             AddToAny END -->
+        </div>
 
       </div>
       <div class='col-auto container text-center index-container' style='height:fit-content;'>

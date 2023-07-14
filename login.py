@@ -151,4 +151,24 @@ def update_profile_pic():
         print('ERROR UPDATING PROFILE PIC')
     
     return render_template('profile.html')
+
+
+@app.route('/delete-user', methods=['POST'])
+def delete_user():
     
+    try:
+        
+        username = request.form.get('username')
+        
+        
+        print('UPDATING PROFILE PIC', username)
+    
+        
+        image_url = 'https://storage.googleapis.com/drawoff-391919.appspot.com/profilepic_nathan.png'
+        
+        user_db.update_profile_pic(username, image_url)
+    
+    except:
+        print('ERROR UPDATING PROFILE PIC')
+    
+    return redirect(url_for('view'))

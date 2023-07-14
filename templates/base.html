@@ -57,6 +57,7 @@
 <body>
 
 <div class='poka'>
+
 {% block content %}
 
 {% endblock %}
@@ -81,7 +82,7 @@
         <!-- HOME -->
         <div class="col-auto mr-2">
           <div class="icon" onclick="home()">
-            <img src='/static/media/draw.svg'>
+            <img width="100" height="100" src="https://img.icons8.com/stickers/100/pencil-tip.png" alt="pencil-tip"/>
             </div>
         </div>
         
@@ -89,7 +90,7 @@
         <!-- VIEW -->
         <div class="col-auto mr-2">
           <div class="icon"  onclick="view()">
-            <img src='/static/media/view.svg'>
+            <img width="100" height="100" src="https://img.icons8.com/stickers/100/visible.png" alt="visible"/>
           </div>
         </div>
 
@@ -97,9 +98,9 @@
         <div class="col-auto mr-2">
           <div class="icon"  onclick="select()">
             {% if user.picture %}
-              <img src='{{ user.picture }}' style='width:100% !important; height: 100% !important;'>
+              <img src='{{ user.picture }}' style='width:90% !important; height: 90% !important;'>
             {% else %}
-              <img src='/static/media/user.svg'>
+              <img src='/static/media/user.svg' style='width:90% !important; height: 90% !important;'>
             {% endif %}
           </div>
         </div>

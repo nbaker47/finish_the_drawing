@@ -4,8 +4,8 @@ from flask import request, redirect, url_for, render_template, make_response
 import drawing_db
 from app_services import *
 from flask_login import current_user
-from user_db import get_profile_pic
-
+from user_db import get_profile_pic, is_admin
+from drawing_db import delete_row_by_id
 
 @app.route('/vote', methods=['POST'])
 def vote():
@@ -86,7 +86,33 @@ def view():
     
     context = {
         'submissions': submissions_sorted,
-        'get_profile_pic': get_profile_pic
+        'get_profile_pic': get_profile_pic,
+        'is_admin' : is_admin
     }
 
     return render_template('submissions.html', **context)
+
+
+# Handle the /submit route
+@app.route('/delete-submission', methods=['POST'])
+def delete_submission():
+    
+    # Get the image data from the POST request
+    image_id = request.form['id']
+    
+    # Set up GCS client
+    storage_client = storage.Client()
+
+    # Retrieve the bucket
+    bucket = storage_client.bucket('drawoff-391919.appspot.com')
+
+    # delete from bucket
+    existing_blob = bucket.blob(image_id+'.png')
+    if existing_blob.exists():
+        print("File already exists, deleting...")
+        existing_blob.delete()
+        
+    # delete from DB
+    delete_row_by_id(image_id)
+    
+    return redirect(url_for('view'))

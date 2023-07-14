@@ -56,7 +56,7 @@ def create_user(username, password, profilepic):
 
         # Insert statement
         insert_stmt = sqlalchemy.text(
-            "INSERT INTO user_data (username, password, profilepic) VALUES (:username, :password, :profilepic)"
+            "INSERT INTO user_data (username, password, profilepic, role) VALUES (:username, :password, :profilepic, 'artist')"
         )
 
         # Insert the new user data into the table
@@ -161,3 +161,77 @@ def update_profile_pic(username, profilepic):
 
     # User created successfully, return True or any other desired response
     return 
+
+def add_column():
+    
+    # Check if the username already exists
+    select_stmt = sqlalchemy.text(
+        "ALTER TABLE user_data ADD COLUMN role VARCHAR(255);"
+    )
+
+    with pool.connect() as db_conn:
+        db_conn.execute(select_stmt)
+
+        # Commit the transaction
+        db_conn.commit()
+
+    # User created successfully, return True or any other desired response
+    return 
+
+
+def set_role_artist(username):
+    
+    # Check if the username already exists
+    select_stmt = sqlalchemy.text(
+        "UPDATE user_data SET role = 'artist' WHERE username = :username;"
+    )
+
+    with pool.connect() as db_conn:
+        db_conn.execute(select_stmt, {"username": username})
+
+        # Commit the transaction
+        db_conn.commit()
+
+    # User created successfully, return True or any other desired response
+    return 
+
+def set_role_admin(username):
+    
+    # Check if the username already exists
+    select_stmt = sqlalchemy.text(
+        "UPDATE user_data SET role = 'ace artist' WHERE username = :username;"
+    )
+
+    with pool.connect() as db_conn:
+        db_conn.execute(select_stmt, {"username": username})
+
+        # Commit the transaction
+        db_conn.commit()
+
+    # User created successfully, return True or any other desired response
+    return 
+
+
+def is_admin(username):
+    
+    # Check if the username already exists
+    select_stmt = sqlalchemy.text(
+        "SELECT role FROM user_data WHERE username = :username;"
+    )
+
+    with pool.connect() as db_conn:
+        result = db_conn.execute(select_stmt, {"username": username})
+        
+        role = result.fetchone()[0]
+        
+        print(role)
+
+        # Commit the transaction
+        db_conn.commit()
+        
+        
+    if role == "ace artist":
+        return True
+
+    # User created successfully, return True or any other desired response
+    return False

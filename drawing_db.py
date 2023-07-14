@@ -152,3 +152,18 @@ def select_where_user(user):
             # print(row)
             
     return result
+
+def delete_row_by_id(id):
+    # delete statement
+    delete_stmt = sqlalchemy.text(
+        "DELETE FROM drawing_data WHERE id = :id"
+    )
+
+    with pool.connect() as db_conn:
+        # delete the row with the given id
+        db_conn.execute(delete_stmt, {"id": id})
+
+        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
+        db_conn.commit()
+        
+    

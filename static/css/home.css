@@ -402,14 +402,14 @@ body{
 
   background-color: #ffffff;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
-  border: #93dbff 3px dashed;  
-  border-radius: 20px;
+  border: #b4b4b4 1px dashed;  
+  border-radius: 10px;
   cursor: pointer;
 }
 
 .icon img{
-  height: 80%;
-  width: 80%;
+  height: 100%;
+  width: 100%;
 }
 
 .footer-container{
@@ -526,12 +526,12 @@ body{
   width: 100%;
   height: 0;
   pointer-events: none;
-  bottom: -150px;
+  bottom: -149px;
   left: -20px;
 
   @media (min-width: 768px) {
-    bottom: 40px;
-    left: -30px;
+    bottom: 32px;
+    left: -50px;
   }
 
 }
@@ -648,7 +648,7 @@ body{
 }
 
 #profile-pic{
-  border: #000000 2px solid;  
+  border: #1c1a2f 5px dashed;  
   border-radius: 5px;
 }
 
