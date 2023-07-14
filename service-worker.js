@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 
 // Service Worker code
 self.addEventListener('install', function(event) {
@@ -7,7 +7,6 @@ self.addEventListener('install', function(event) {
         return cache.addAll([
           'static/media/favicon.ico',
           'static/css/bootstrap.css',
-          'static/css/home.css',
           'static/js/bootstrap.js',
           'static/js/canvas.js',
           'static/js/random_lines.js',

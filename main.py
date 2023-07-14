@@ -96,20 +96,28 @@ def print_session_cookie():
 ''' ---------------------------- INDEX ---------------------------- '''
 
 # index router
-@app.route('/')
+@app.route('/index')
 def index():
+    
+    # Get the daily word and seed
+    random_word, seed = get_daily_word_and_seed()
+
+    return render_template('index.html', word=random_word, seed=seed)
+
+
+@app.route('/')
+def select_or_index():
     
     # Get the daily word and seed
     random_word, seed = get_daily_word_and_seed()
     
     # Check if the user is logged in
     if current_user.is_authenticated:
-        print("User is logged in INDEX")
+        return render_template('index.html', word=random_word, seed=seed)
     else:
-        print("User is not logged in")
+        return redirect(url_for('select'))
 
-    return render_template('index.html', word=random_word, seed=seed)
-
+    
 
 ''' ---------------------------- Entry ---------------------------- '''
 

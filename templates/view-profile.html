@@ -9,26 +9,18 @@
 
       <div class='col-auto mr-1 mb-3 text-center index-container align-items-center justify-content-center' style='height:fit-content;' >
       
-        <!--Title-->
-        <div class="text-center custom-title ">
-            <!--<span class=''> Today, finish this drawing of a:</span>-->
-            <img src="https://fontmeme.com/permalink/230713/50055bbf09425b67ffa3341dc4a62de1.png" alt="Wow, look at you!" border="0">
-        </div>
-        <!--Drawing-->
       
-        <img class="mb-4" src="{{ user.picture }}" alt="" width="200px" height="200px" id='profile-pic' style='background-color:white;'>
-        <h1 class="custom-title">{{ user.username }}</h1>
+        <img class="mb-4" src="{{ view_user[2] }}" alt="" width="200px" height="200px" id='profile-pic' style='background-color:white;'>
+        <h1 class="custom-title">{{ view_user.username }}</h1>
         <br>
-        <button class="btn btn-lg btn-link btn-block bubblegum" type="button" onclick="window.location.href='/redraw'" >Redraw profile picture</button>
-      
-        <button class="btn btn-lg btn-link btn-block bubblegum" type="button" onclick="window.location.href='/logout'" >Logout</button>
+
       </div>
       <div class='col-auto container text-center index-container' style='height:fit-content;'>
       
         <!--Title-->
         <div class="text-center custom-title">
             <!--<span class=''> Today, finish this drawing of a:</span>-->
-            <img src="/static/media/your_creations.png" alt="Your Creations" border="0">
+            <img src="/static/media/their_creations.png" alt="Your Creations" border="0">
         </div>
         <!--Drawing-->
         {% for image in images %}

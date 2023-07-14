@@ -35,9 +35,7 @@ def get_daily_word_and_seed():
     
     return random_word, seed
 
-# image uploader
 def upload_image_to_bucket(drawing_data, username=None):
-    
     # Get the image data from the POST request
     base64_image = drawing_data
 
@@ -70,9 +68,15 @@ def upload_image_to_bucket(drawing_data, username=None):
     else:
         filename = f"image_{datetime.now().strftime('%Y%m%d%H%M%S')}.png"
 
+    # Check if the file already exists
+    existing_blob = bucket.blob(filename)
+    if existing_blob.exists():
+        print("File already exists, deleting...")
+        existing_blob.delete()
+
     # Upload the image data to the bucket
     blob = bucket.blob(filename)
     blob.upload_from_file(image_io, content_type='image/png')
     image_url = blob.public_url
-    
+
     return image_url, filename

@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Bubblegum Sans' rel='stylesheet'>
 
     <!-- MANIFEST -->
    {% block manifest %}{% endblock %}
@@ -55,17 +56,18 @@
 </head>
 <body>
 
+<div class='poka'>
 {% block content %}
 
 {% endblock %}
-
+</div>
 
 <!-- Footer -->
 <footer class="footer p-1 text-center">
     <div class="container-fluid text-center footer-container">
       <div class="row d-flex align-items-center no-gutters">
 
-        <!-- COG -->
+        <!-- COG 
         <div class="col-auto mr-2">
           <div class="settings-icon want-to-invert icon" onclick="openSettingsTab()">
             <i class="fas fa-cog" style="color: #000000;"></i>
@@ -74,39 +76,44 @@
             <input type="range" min="1" max="2" value="1" class="slider" id="myRangeTheme">
           </div>
         </div>
+        -->
 
         <!-- HOME -->
         <div class="col-auto mr-2">
-          <div class="email-icon want-to-invert icon" style="color: #000000;" onclick="home()">
-              <i class="fa fa-house"></i>
+          <div class="icon" onclick="home()">
+            <img src='/static/media/draw.svg'>
             </div>
         </div>
         
 
         <!-- VIEW -->
         <div class="col-auto mr-2">
-          <div class="email-icon want-to-invert icon" style="color: #000000;" onclick="view()">
-            <i class="fa-regular fa-eye"></i>
+          <div class="icon"  onclick="view()">
+            <img src='/static/media/view.svg'>
           </div>
         </div>
 
         <!-- USER -->
         <div class="col-auto mr-2">
-          <div class="email-icon want-to-invert icon" style="color: #000000;" onclick="select()">
-            <i class="fa-regular fa-user"></i>
+          <div class="icon"  onclick="select()">
+            {% if user.picture %}
+              <img src='{{ user.picture }}' style='width:100% !important; height: 100% !important;'>
+            {% else %}
+              <img src='/static/media/user.svg'>
+            {% endif %}
           </div>
         </div>
 
         <!-- USER -->
         <div class="col-auto mr-2">
-          <div class="" style="color: #000000;" onclick="">
+          <span style='font-weight:bold;'>
             {{ current_user.username }}
-          </div>
+          </span>
         </div>
 
         <!-- COPYRIGHT -->
         <div class="col ms-auto">
-          <span style="text-align: end; padding-right: 3%">  2023 Finish the Drawing © <br> finishthedrawing.contact@gmail.com </span>
+          <span style="text-align: end; padding-right: 3%; font-size: 10px;" class='text-dark bubblegum'>  2023 Finish the Drawing © <br> finishthedrawing.contact@gmail.com </span>
         </div>
       </div>
     </div>
@@ -210,7 +217,7 @@
     }
 
     function home(){
-        window.location.href = "/";
+        window.location.href = "/index";
     }  
     
     function view(){

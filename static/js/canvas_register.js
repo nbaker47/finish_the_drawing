@@ -174,6 +174,9 @@ function stopDrawing() {
 
 // Undo the last line segment drawn by the user
 function undoLastStroke() {
+
+    console.log("undoing stroke");
+
     // Remove the last line segment from the userDrawings array
     userDrawings.pop();
 

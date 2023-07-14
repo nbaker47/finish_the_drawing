@@ -5,6 +5,7 @@ import bcrypt
 import user_db
 from main import app, login_manager
 from images import upload_image_to_bucket
+from drawing_db import select_where_user
 
 
 @login_manager.user_loader
@@ -106,9 +107,48 @@ def select():
     # Check if the user is logged in
     if current_user.is_authenticated:
         print("User is logged in")
-        return render_template('profile.html')
+        
+        images = select_where_user(current_user.get_id())
+        
+        return render_template('profile.html', images=images)
     else:
         print("User is not logged in")
         return render_template('select.html')
+    
+# select
+@app.route('/view-profile', methods=['POST'])
+def view_profile():
+    # Check if the user is logged in
+    
+    username = request.form.get('username')
+    
+    user = user_db.get_user(username)
+        
+    images = select_where_user(username)
+    
+    return render_template('view-profile.html', images=images, view_user=user)
 
+    
+@app.route('/redraw')
+def redraw():
+    return render_template('redraw.html')
+
+
+@app.route('/update-profile-pic', methods=['POST'])
+def update_profile_pic():
+    
+    try:
+    
+        drawing_data = request.form.get('drawingData')
+        
+        username = current_user.get_id()
+        
+        image_url, filename = upload_image_to_bucket(drawing_data, username=username)
+        
+        user_db.update_profile_pic(current_user.get_id(), image_url)
+    
+    except:
+        print('ERROR UPDATING PROFILE PIC')
+    
+    return render_template('profile.html')
     

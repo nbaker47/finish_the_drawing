@@ -82,7 +82,7 @@ function drawRandomLines() {
 
   context.lineWidth = 5;
   context.lineCap = 'round';
-  context.strokeStyle = 'blue'; // Set the line color to blue
+  context.strokeStyle = '#8F95FF'; // Set the line color to blue
 
   randomLines.forEach(function (linePoints) {
     context.beginPath();

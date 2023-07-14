@@ -145,3 +145,19 @@ def get_profile_pic(username):
 
     # User created successfully, return True or any other desired response
     return pic
+
+def update_profile_pic(username, profilepic):
+    
+    # Check if the username already exists
+    select_stmt = sqlalchemy.text(
+        "UPDATE user_data SET profilepic = :profilepic WHERE username = :username"
+    )
+
+    with pool.connect() as db_conn:
+        db_conn.execute(select_stmt, {"username": username, "profilepic": profilepic})
+
+        # Commit the transaction
+        db_conn.commit()
+
+    # User created successfully, return True or any other desired response
+    return 

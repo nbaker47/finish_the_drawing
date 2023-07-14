@@ -4,20 +4,20 @@
 {% block content %}
 
 <!-- Title and Content -->
-<div class=''>
+<div class='min-vh-100 ' style='top:0px'>
   <div class='master-container'>
     <!-- Title -->
-    <div class="text-center custom-title fade-in">
-        <p class='h2 font-weight-bolder'> Today's Submissions </p>
+    <div class="text-center custom-title-2">
+        <img src="/static/media/todays_submissions.png" alt="Today's Submissions" border="0" width="60%">
     </div>
   
   <!-- Submissions -->
-  <div class="custom-div fade-in text-center fade-in" id="books" style='margin-bottom:80px'>
+  <div class=" text-center bounce-in" id="books" style='margin-bottom:80px'>
     <div class="container">
-      <div class="row gx-5">
+      <div class="row gx-5 d-flex justify-content-center">
         {% for submission in submissions %}
-        <div class="col-md-3 my-3 mb-5 pr-4">
-          <div class="card  {% if loop.index0 == 0 %}first-card{% endif %} {% if loop.index0 == 1 %}second-card{% endif %} {% if loop.index0 == 2 %}third-card{% endif %}">
+        <div class="col-md-3 my-3 mb-5 mr-3 ml-3">
+          <div class="card box-outline-card  {% if loop.index0 == 0 %}first-card{% endif %} {% if loop.index0 == 1 %}second-card{% endif %} {% if loop.index0 == 2 %}third-card{% endif %}">
             
             <!-- Podium -->
             {% if loop.index0 < 3 %}
@@ -50,7 +50,7 @@
             {% if submission.user != 'Guest Drawer' %}
             <!-- User Insert -->
             <div class="user-insert want-to-invert">
-                <img src="{{ get_profile_pic(submission.user)[0] }}" class='rounded-circle shadow-4-strong' width='80px' height='80px'>
+                <a href="#" onclick= "viewUser( '{{ submission.user }}' )"><img src="{{ get_profile_pic(submission.user)[0] }}" class='rounded-circle shadow-4-strong' width='80px' height='80px'></a>
                 <span> {{ submission.user }} <span>
             </div>
             {% endif %}
@@ -100,6 +100,25 @@
 
     function noSubmission() {
       alert("You can't vote unless you submit a drawing!");
+    }
+
+    function viewUser(user){
+      // Create a form and append the image data
+      var form = document.createElement('form');
+      form.action = '/view-profile';
+      form.method = 'POST';
+      // form.enctype = 'multipart/form-data'; // Set the enctype attribute
+  
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'username';
+      input.value = user;
+  
+      form.appendChild(input);
+      document.body.appendChild(form);
+  
+      // Submit the form
+      form.submit();
     }
 
   </script>

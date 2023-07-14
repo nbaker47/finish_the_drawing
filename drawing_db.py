@@ -133,3 +133,22 @@ def vote(id):
         
         # print(updated_row)
 
+
+# selct where
+def select_where_user(user):
+    
+    print(user)
+    
+    with pool.connect() as db_conn:
+
+        # query database
+        result = db_conn.execute(sqlalchemy.text("SELECT * from drawing_data WHERE user = :user"), {'user' : user}).fetchall()
+
+        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
+        db_conn.commit()
+
+        # Do something with the results
+        # for row in result:
+            # print(row)
+            
+    return result

@@ -9,54 +9,58 @@
 
 {% block content %}
 
-<div class="d-flex align-items-center min-vh-100 box-outline-no">
-<div class='master-container index-container container text-center' style='margin-bottom:100px'>
-    
-  <!--Title-->
-  <div class="text-center custom-title">
-      <!--<span class=''> Today, finish this drawing of a:</span>-->
-      <img src="https://fontmeme.com/permalink/230708/6d7b11b0ef475bbee778dfe5f61a4c73.png" alt="handwriting-fonts" border="0">
-      <div class='bounce-in'>
-        <span class=" emph-title">"{{word}}"</span>
-      </div>
-  </div>
+<div class="d-flex align-items-center min-vh-100 gradient-background">
 
-  <!-- Drawing interface -->
-  <div class="text-center drawing-interface ">
+  <div class=' container text-center index-container'  >
 
-    <!-- Pencil Man -->
-    <div id="pencil-container" class="container">
-      <div class="row">
-        <div class="col-2 p-0">
-          <img id="pencil-image" src="/static/media/pencil_neutral.png" class="img-fluid">
+        <!-- Pencil Man -->
+        <div id="pencil-container" class="container">
+          <div class="row">
+            <div class="col-2 p-0">
+              <img id="pencil-image" src="/static/media/pencil_neutral.png">
+            </div>
+            <div class="col-10">
+              <div id="pencil-text" class="bubble left want-to-invert">
+                <span class='want-to-invert'> Be Creative! </span>
+              </div>
+            </div>
+          </div>
+        </div>  
+      
+    <!--Title-->
+    <div class="text-center custom-title">
+        <!--<span class=''> Today, finish this drawing of a:</span>-->
+        <img src="https://fontmeme.com/permalink/230713/f456b013691a0fa18e289bbe37144f5e.png" alt="handwriting-fonts" border="0">
+        <div class='bounce-in'>
+          <span class=" emph-title">"{{word}}"</span>
         </div>
-        <div class="col-10">
-          <div id="pencil-text" class="bubble left want-to-invert">
-            <span class='want-to-invert'> Be Creative! </span>
+    </div>
+
+    <!-- Drawing interface -->
+    <div class="text-center drawing-interface box-outline">  
+
+      <div class='inner-interface '>
+
+        <!-- Canvas -->
+        <canvas id="drawing-canvas"  class='want-to-invert'  width='320px' height='280px'></canvas>
+
+        <!-- Submit button and Back button -->
+        <div class="row-col-2 text-center button-container d-flex want-to-gray">
+          <div class='col-md-6'>
+            <button id="back-button" class="btn mx-auto back-button custom-button" onclick="undoLastStroke()"><i class="fas fa-undo"></i></button>
+          </div>
+          <div class='col-md-6'>
+            <button id="submit-button" class="btn mx-auto submit-button custom-button" onclick="submitDrawing()"> Submit </button>
           </div>
         </div>
+
       </div>
-    </div>    
-
-    <div class='inner-interface '>
-
-      <!-- Canvas -->
-      <canvas id="drawing-canvas" width="400" height="350" class='want-to-invert'></canvas>
-
-      <!-- Submit button and Back button -->
-      <div class="row-col-2 text-center button-container d-flex want-to-gray">
-        <div class='col-md-6'>
-          <button id="back-button" class="btn mx-auto back-button custom-button" onclick="undoLastStroke()"><i class="fas fa-undo"></i></button>
-        </div>
-        <div class='col-md-6'>
-          <button id="submit-button" class="btn mx-auto submit-button custom-button" onclick="submitDrawing()"> Submit </button>
-        </div>
-      </div>
-
     </div>
+
   </div>
 
-</div>
+
+
 </div>
 
 {% endblock %}
@@ -106,7 +110,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register("/service-worker.js?v=1")
+        navigator.serviceWorker.register("/service-worker.js?v=2")
           .then(function(registration) {
             console.log('Service Worker registered with scope:', registration.scope);
           })
