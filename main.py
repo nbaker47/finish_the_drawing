@@ -64,6 +64,11 @@ def serve_favicon():
 def serve_manifest():
     return send_from_directory(app.root_path, 'manifest.json')
 
+# serve assetlinks.json
+@app.route('/.well-known/assetlinks.json')
+def serve_assetlinks():
+    return send_from_directory(app.root_path, 'assetlinks.json')
+
 # serve service-worker.js
 @app.route('/service-worker.js')
 def serve_worker():

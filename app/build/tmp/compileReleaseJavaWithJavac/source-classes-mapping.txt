@@ -1,0 +1,8 @@
+com/finishthedrawing/twa/LauncherActivity.java
+ com.finishthedrawing.twa.LauncherActivity
+com/finishthedrawing/twa/BuildConfig.java
+ com.finishthedrawing.twa.BuildConfig
+com/finishthedrawing/twa/Application.java
+ com.finishthedrawing.twa.Application
+com/finishthedrawing/twa/DelegationService.java
+ com.finishthedrawing.twa.DelegationService

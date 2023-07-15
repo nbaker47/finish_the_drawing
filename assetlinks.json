@@ -1,0 +1,11 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.finishthedrawing.twa",
+        "sha256_cert_fingerprints": [
+          "35:CF:68:FF:CC:F4:54:41:F3:25:77:5F:A6:30:E9:D2:07:6C:3C:EE:A3:AB:46:60:07:FF:43:59:EF:37:BD:AF",
+          "4E:D2:35:4D:F6:12:4D:27:A2:83:0B:05:89:D0:F4:F3:82:7D:83:19:0C:44:3A:0D:C8:68:16:68:2B:0F:05:0E"
+        ]
+      }
+    }]
