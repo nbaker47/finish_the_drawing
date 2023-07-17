@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex align-items-center min-vh-100 gradient-background">
+  <!-- Index Container -->
+  <div class='container text-center index-container'>
+
+    <!-- Pencil Man -->
+    <div id="pencil-container" class="container">
+      <div class="row">
+        <div class="col-2 p-0">
+          <img id="pencil-image" src="/static/media/pencil_neutral.png">
+        </div>
+        <div class="col-10">
+          <div id="pencil-text" class="bubble left want-to-invert">
+            <span class='want-to-invert'> Be Creative! </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="text-center custom-title">
+      <img src="/static/media/finish.png" alt="handwriting-fonts" border="0">
+      <div class='bounce-in'>
+        <span class="emph-title">"{{word}}"</span>
+      </div>
+    </div>
+
+    <!-- Drawing interface -->
+    <div class="text-center drawing-interface box-outline">
+      <div class='inner-interface'>
+        {% include 'share-bar.html' %}
+        <!-- Canvas -->
+        <canvas id="drawing-canvas" class='want-to-invert fade-in' width='320px' height='280px'></canvas>
+        <!-- Submit button and Back button -->
+        <div class="row-col-2 text-center button-container d-flex want-to-gray">
+          <div class='col-md-6'>
+            <button id="back-button" class="btn mx-auto back-button custom-button" onclick="undoLastStroke()"><i class="fas fa-undo"></i></button>
+          </div>
+          <div class='col-md-6'>
+            <button id="submit-button" class="btn mx-auto submit-button custom-button" onclick="submitDrawing()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<!-- SMOKE -->
+<script>
+  // TODO: Add smoke script here
+</script>
+
+<!-- SUBMIT BUTTON -->
+<script>
+  // Function to submit the drawing
+  function submitDrawing() {
+    var canvas = document.getElementById('drawing-canvas');
+    var image = canvas.toDataURL(); // Convert canvas to base64 image
+
+    // Create a form and append the image data
+    var form = document.createElement('form');
+    form.action = '/submit';
+    form.method = 'POST';
+
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'image';
+    input.value = image;
+
+    var input2 = document.createElement('input');
+    input2.type = 'hidden';
+    input2.name = 'comment';
+    input2.value = document.getElementById('pencil-text').textContent;
+
+    form.appendChild(input);
+    form.appendChild(input2);
+    document.body.appendChild(form);
+
+    // Submit the form
+    form.submit();
+  }
+</script>
+
+<!-- CANVAS DRAWING -->
+<script src="/static/js/canvas.js"></script>
+
+<!-- RANDOM LINES -->
+<script src="static/js/random_lines.js"></script>
+<script>
+  var seed = {{ seed }};
+</script>
+
+<!-- SERVICE WORKER -->
+<script>
+  // Register service worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register("/service-worker.js?v=2")
+        .then(function(registration) {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(function(error) {
+          console.error('Service Worker registration failed:', error);
+        });
+    });
+  }
+</script>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Main content container -->
+<div class='d-flex align-items-center min-vh-100'>
+    <div class="container text-center box-outline" style='width: fit-content; padding:10px !important; padding-top:30px !important;'>
+
+        <!-- Form -->
+        <form class="form-signin" action="/update-profile-pic" method="POST">
+            <!-- Logo -->
+            <img class="mb-4" src="{{ url_for('static', filename='media/icon-512.png') }}" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal"> Redraw Profile Picture </h1>
+
+            <!-- Password / drawing warning -->
+            <div class="alert alert-danger" role="alert" id='passWarn'>
+                <span id='warnSpan'></span>
+            </div>
+
+            <!-- Drawing interface -->
+            <div class="text-center drawing-interface">
+                <!-- Pencil Man -->
+                <div id="pencil-container-register" class="container">
+                    <div class="row">
+                        <div class="col-2 p-0">
+                            <img id="pencil-image" src="/static/media/pencil_neutral.png">
+                        </div>
+                        <div class="col-10">
+                            <div id="pencil-text" class="bubble left want-to-invert">
+                                <span class='want-to-invert'> Changes will take a while to load before taking effect! </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='inner-interface'>
+                    <!-- Canvas -->
+                    <canvas id="drawing-canvas" width='280px' height='245px' class='want-to-invert'></canvas>
+                    <!-- Submit button and Back button -->
+                    <div class="row-col-2 text-center button-container d-flex want-to-gray">
+                        <div class='col-md-6'>
+                            <button id="back-button" type='button' class="btn mx-auto back-button custom-button" onclick="undoLastStroke()"><i class="fas fa-undo"></i></button>
+                        </div>
+                        <div class='col-md-6'>
+                            <button id="submit-button" type='button' class="btn mx-auto submit-button custom-button">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </form>
+        
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<!-- CANVAS DRAWING -->
+<script src="/static/js/canvas_register.js"></script>
+<script src="/static/js/redraw.js"></script>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Content -->
+<div class="min-vh-100" style="top: 0px">
+  <div class="master-container confetti-box">  
+
+    <!-- Title -->
+    <div class="text-center custom-title-2 zoom-in">
+        <img src="/static/media/hall_of_fame.png" alt="Hall of Fame" border="0" width="60%">
+    </div>
+
+    <!-- Tutorial Message -->
+    <div class="container mb-5">
+      <div class="text-center">
+        <span class="bubblegum thin-white">Click on a user to see their profile!</span>
+      </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-6 text-center" style="max-width: 600px;">
+        {% for user in users %}
+          {% if get_profile_pic(user[0]) %}
+            <!-- User Card -->
+            <div style="height: fit-content;" class="card mb-5 index-container bounce-in {{ get_background(user[0])[0] }}">
+              <div class=""> 
+                <a href="#" onclick="viewUser('{{ user[0] }}')">
+                  <img src="{{ get_profile_pic(user[0])[0] }}" class="rounded-circle profile-circle {% if loop.index0 == 0 %}profile-circle-special{% endif %} shadow-4-strong dashed-outline" width="80px" height="80px">
+                </a>
+                <a href="#" onclick="viewUser('{{ user[0] }}')">
+                  <span class="sig1 ml-4 font-weight-bold index-container-background p-2">{{ user[0] }}</span>
+                </a>
+                <p class="mt-4 bubblegum index-container-background p-2">Drawings Submitted: {{ user[1] }}</p>
+                <p class="mt-4 bubblegum index-container-background p-2">Total Likes: {{ user[2] }}</p>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+  
+  
+{% block scripts %}
+
+<!-- Confetti JavaScript -->
+<script src="/static/js/confetti.js"></script>
+
+{% endblock %}

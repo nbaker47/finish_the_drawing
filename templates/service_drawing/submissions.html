@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Content -->
+<div class='min-vh-100' style='top:0px'>
+  <div class='master-container'>
+    
+    <!-- Title -->
+    <div class="text-center custom-title-2">
+        <img src="/static/media/todays_submissions.png" alt="Today's Submissions" border="0" width="60%">
+    </div>
+
+    <!-- Share Bar -->
+    {% include 'share-bar.html' %}
+
+    <!-- Tutorial -->
+    <div class="container mb-4">
+      <div class="text-center">
+        <span class="bubblegum thin-white">Click on a user to see their profile!</span>
+      </div>
+    </div>
+
+    <!-- Submissions -->
+    <div class="text-center bounce-in" id="books" style='margin-bottom:80px'>
+      <div class="container">
+        <div class="row gx-5 d-flex justify-content-center">
+          <!-- Cards -->
+          {% for submission in submissions %}
+          <div class="col-md-3 my-3 mb-5 mr-3 ml-3">
+            <div id="card-{{ submission.id }}" class="card box-outline-card  {% if loop.index0 == 0 %}first-card{% endif %} {% if loop.index0 == 1 %}second-card{% endif %} {% if loop.index0 == 2 %}third-card{% endif %}">
+              <!-- Podium -->
+              {% if loop.index0 < 3 %}
+              <div class='podium'>
+                {% if loop.index0 == 0 %} <i class="fa-solid fa-trophy" style="color: #ffc800;"></i>{% endif %}
+                {% if loop.index0 == 1 %} <i class="fa-solid fa-trophy" style="color: silver"></i> {% endif %}
+                {% if loop.index0 == 2 %} <i class="fa-solid fa-trophy" style="color: #cd7f32;"></i> {% endif %}
+              </div>
+              {% endif %}
+              <!-- Body -->
+              <div class="card-body">
+
+                <!-- Likes/Dislikes/share tab-->
+                <div class="star-icon mt-2">
+                  <!-- Like -->
+                  <i class="fa-solid fa-heart mr-1"
+                    {% if request.cookies.get('submitted_image') %}
+                        {% if submission.id not in request.cookies.get('voted_image', '') %}
+                          onclick="vote(this, '{{ submission.id }}', 'up')"
+                        {% else %}
+                          style="color: red;"
+                        {% endif %}
+                    {% else %}
+                      onclick="noSubmission()"
+                    {% endif %}              
+                  > 
+                  </i>{{ submission.votes }}
+                  <br>
+                  <!-- Dislike -->
+                  {% if user and request.cookies.get('downvoted_image') is not none %}
+                    <i class="fa-solid fa-thumbs-down mt-2" 
+                      {% if submission.id not in request.cookies.get('downvoted_image') %} onclick="vote(this, '{{ submission.id }}', 'down')"  {% endif %}
+                      {% if submission.id in request.cookies.get('downvoted_image') %} style="color: red;" onclick=""  {% endif %}
+                    > 
+                    </i>
+                  {% elif not user %}
+                    <i class="fa-solid fa-thumbs-down mt-2" onclick="notSignedIn()"></i>
+                  {% endif %}
+                  <br>
+                  <!-- Share -->
+                  <i class="fa-solid fa-share mt-2" onclick="openCard('{{ submission.id }}')"></i> 
+                  <!-- Admin Delete -->
+                  {% if is_admin(user.username)  %}
+                  <form action="/delete-submission" method="POST">
+                    <input type="hidden" name="id" value="{{ submission.id }}">
+                    <button type="submit" class="btn btn-danger btn-sm mt-2 mr-2" style='border-radius: 20px;'> <i class="fa-solid fa-xmark" style='color:white;  '></i> </button>
+                  </form>
+                  {% endif %}
+                </div>
+
+                <!-- Image -->
+                <img src="{{ submission.image }}" alt="Submission Image" class='submission-image' id="image-{{ submission.id }}">
+
+              </div>
+
+              <!-- Footer -->
+              <div class="card-footer"><span class='image-description'>{{ submission.message }}</span></div>
+
+              <!-- User Profile Pic -->
+              {% if submission.user != 'Guest Drawer' %}
+              <!-- User Insert -->
+              <div class="user-insert want-to-invert">
+                  <a href="#" onclick="viewUser('{{ submission.user }}')">
+                    <div class="{{ get_background(submission.user)[0] }} rounded-circle p-1
+                    {% if get_background(submission.user)[0] is not none %} 
+                      border border-dark
+                    {% endif %}
+                    ">
+                      <img src="{{ get_profile_pic(submission.user)[0] }}" class="rounded-circle shadow-4-strong
+                      {% if get_background(submission.user)[0] is not none %} 
+                        border border-dark white-back
+                      {% else %}  
+                        profile-circle
+                      {% endif %}
+                      " width='80px' height='80px'>
+                    </div>
+                    <!-- Username -->
+                    <span> {{ submission.user }}  </span>
+                  </a>
+                  <!-- Admin Delete -->
+                  {% if is_admin(user.username)  %}
+                  <form action="/delete-user" method="POST">
+                    <input type="hidden" name='username' value="{{ submission.user }}">
+                    <button type="submit" class="btn btn-danger btn-sm mt-2 mr-2" style='border-radius: 20px; top:-10px; position:absolute;'> 
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </form>
+                  {% endif %}  
+              </div>
+              {% endif %}
+
+            </div>
+          </div>
+          {% endfor %}
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Warning Messages-->
+<div class="d-flex align-items-center justify-content-center">
+
+  <!-- Not Signed In -->
+  <div class="container text-center box-outline bounce-in" style="width: 400px !important;" id='registerAlert'>
+    <button type="button" class="btn btn-danger btn-sm mt-2 mr-2 close-icon" style='border-radius: 20px;' onclick='closeAlert()'> <i class="fa-solid fa-xmark" ></i> </button>
+      <img class="mb-4" src="{{ url_for('static', filename='media/pencil_sad.png') }}" alt="" width="40" height="72">
+      <h1 class="h3 mb-3 font-weight-normal" style='color:black;'>You can't downvote without making an account</h1>
+      <br>
+      <button class="btn btn-primary mx-auto" onclick="login()">Login</button>
+      <br>
+      <button class="btn mx-auto" onclick="register()">Register</button>
+      <br>
+      <p class="mt-4 mb-3 text-muted">© Finish the Drawing 2023</p>
+  </div>
+
+  <!-- No Submission -->
+  <div class="container text-center box-outline bounce-in" style="width: 400px !important;" id='drawAlert'>
+    <button type="button" class="btn btn-danger btn-sm mt-2 mr-2 close-icon" style='border-radius: 20px;' onclick='closeAlert()'> <i class="fa-solid fa-xmark" ></i> </button>
+      <img class="mb-4" src="{{ url_for('static', filename='media/pencil_sad.png') }}" alt="" width="40" height="72">
+      <h1 class="h3 mb-3 font-weight-normal" style='color:black;'>You can't vote without submitting a drawing</h1>
+      <br>
+      <button class="btn btn-primary mx-auto" onclick="index()">Draw!</button>
+      <br>
+      <p class="mt-4 mb-3 text-muted">© Finish the Drawing 2023</p>
+  </div>  
+
+</div>
+
+{% endblock %}
+  
+  
+{% block scripts %}
+
+<!-- Voting -->
+<script>
+    function vote(icon, id, v) {
+      icon.classList.toggle("text-gray");
+      icon.classList.toggle("text-danger");
+      icon.classList.toggle("heartbeat");
+
+  
+      // Create a form and append the image data
+      var form = document.createElement('form');
+      form.action = '/vote';
+      form.method = 'POST';
+      // form.enctype = 'multipart/form-data'; // Set the enctype attribute
+  
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'id';
+      input.value = id;
+  
+      form.appendChild(input);
+
+      var input2 = document.createElement('input');
+      input2.type = 'hidden';
+      input2.name = 'vote';
+      if (v == 'up') {
+        input2.value = 1;
+      } else {
+        input2.value = -1;
+      }
+      console.log(input2.value);
+  
+      form.appendChild(input2);
+
+      document.body.appendChild(form);
+  
+      // Submit the form
+      form.submit();
+
+    }
+</script>
+<script src="/static/js/shrink_text.js"></script>
+<script src="/static/js/alert_box_main.js"></script>
+
+{% endblock %}
+

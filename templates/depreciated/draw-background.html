@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class=' d-flex align-items-center min-vh-100'>
+    <div class="container text-center box-outline"  style='width: fit-content; padding:10px !important; padding-top:30px !important;'>
+        <form class="form-signin" action="/update-background" method="POST">
+
+            <img class="mb-4" src="{{ url_for('static', filename='media/icon-512.png') }}" alt="" width="72" height="72">
+
+            <h1 class="h3 mb-3 font-weight-normal"> Draw your new background! </h1>
+
+            <!-- Password / drawing warning -->
+            <div class="alert alert-danger" role="alert" id='passWarn'>
+                <span id='warnSpan'></span>
+            </div>
+
+            <!-- Drawing interface -->
+            <div class="text-center drawing-interface">
+
+                <!-- Pencil Man -->
+                <div id="pencil-container-register" class="container">
+                    <div class="row">
+                        <div class="col-2 p-0">
+                            <img id="pencil-image" src="/static/media/pencil_neutral.png" >
+                        </div>
+                        <div class="col-10">
+                            <div id="pencil-text" class="bubble left want-to-invert">
+                                <span class='want-to-invert'> Changes will take a while to load before taking effect! </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='inner-interface'>
+
+                    <!-- Canvas -->
+                    <canvas id="drawing-canvas" width='280px' height='245px' class='want-to-invert'></canvas>
+
+                    <!-- Submit button and Back button -->
+                    <div class="row-col-2 text-center button-container d-flex want-to-gray">
+                        <div class='col-md-6'>
+                            <button id="back-button" type='button' class="btn mx-auto back-button custom-button" onclick="undoLastStroke()"><i class="fas fa-undo"></i></button>
+                        </div>
+                        <div class='col-md-6'>
+                            <button id="submit-button" type='button' class="btn mx-auto submit-button custom-button">Submit</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <br>
+
+
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+<!-- CANVAS DRAWING -->
+<script src="/static/js/canvas_register.js"></script>
+
+<script>
+
+    const passWarn = document.getElementById('passWarn');
+    passWarn.style.display = 'none';
+
+    // Get the canvas element
+    var canvas = document.getElementById('drawing-canvas');
+
+    // Get the submit button
+    const submitButton = document.getElementById('submit-button');
+
+    // Add event listener to the submit button
+    submitButton.addEventListener('click', () => {
+
+        console.log('Submit button clicked.')
+
+        // Get the drawing data (as base64 image data)
+        const drawingData = canvas.toDataURL();
+
+        // Check if the canvas has any drawn content
+        if (strokeCounter < 1) {
+            passWarn.style.display = 'block';
+            passWarn.innerHTML = 'Please draw something.';
+            return;
+        }
+
+        // Create a hidden input element to store the drawing data
+        const hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'drawingData');
+        hiddenInput.setAttribute('value', drawingData);
+
+        // Append the hidden input to the form
+        const form = document.querySelector('form');
+        form.appendChild(hiddenInput);
+        form.submit();
+    });
+
+    function select(){
+        window.location.href = "/select";
+    }
+</script>
+
+{% endblock %}
+
+    

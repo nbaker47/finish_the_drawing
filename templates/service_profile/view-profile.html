@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="align-items-center min-vh-100 gradient-background container">
+  <div class='row justify-content-center my-5 display-flex '>
+
+    <!-- User Background -->
+    <div class="{{ get_background(view_user[0])[0] }} col-auto mr-1 mb-3 text-center index-container align-items-center justify-content-center" style='height:fit-content;' >
+      <div class='row'>
+        <!-- User Passport -->
+        <div class='col-12' style="width: 400px;">
+          <!-- Headshot -->
+          <img class="mb-4" src="{{ view_user[2] }}" alt="" width="200px" height="200px" id='profile-pic' style='background-color:white;'>
+          <!-- Name -->
+          <h1 class="custom-title index-container-background">{{ view_user.username }}</h1>
+          <!-- Role -->
+          <div class='bubblegum h3 index-container-background'>{{ view_user[3] }}</div>
+          <!-- Sharebar -->
+          <div class='index-container-background'>{% include 'share-bar.html' %}</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- User Submissions -->
+    <div class='col-auto container text-center index-container bounce-in' style='height:fit-content;'>
+      <!--Title-->
+      <div class="text-center custom-title">
+        <img src="/static/media/their_creations.png" alt="Your Creations" border="0">
+      </div>
+      <!-- Submissions -->
+      {% for image in images %}
+      <div class="card box-outline-card mb-5" style='height:fit-content;'>
+        <div class='podium bubblegum' style='background: white; text-shadow: none !important;'>{{ image[4] }}</div>
+        <!-- Star & Body -->
+        <div class="card-body want-to-invert">
+          <img src="{{ image[1] }}" alt="Submission Image" class='submission-image'>
+        </div>
+        <!-- Footer -->
+        <div class="card-footer"><span class='image-description'>{{ image[3] }}</span></div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

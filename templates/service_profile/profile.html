@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Main content container -->
+<div class="align-items-center min-vh-100 gradient-background container">
+  <!-- Profile -->
+  <div class='row justify-content-center my-5 display-flex'>
+
+    <!-- Player Passport -->
+    <div id='back' class='{{ background }} col-auto mr-1 mb-3 text-center index-container align-items-center justify-content-center p-4' style="height:440px; width:500px;">
+      <!-- Poka background -->
+      <div style='width:300px;' class='container index-container-background mb-4'>
+        <!-- Headshot -->
+        <img class="mb-2 mt-4" src="{{ user.picture }}" alt="" width="200px" height="200px" id='profile-pic' style='background-color:white;'>
+        <br>
+        <h2 class="sig1 font-weight-bold">{{ user.username }}</h1>
+        <!-- Profile Buttons -->
+        <button class="btn btn-sm btn-link btn-block bubblegum mb-1" type="button" onclick="window.location.href='/redraw'">Redraw profile picture</button>
+        <button class="btn btn-sm btn-link btn-block bubblegum text-info" type="button" onclick="changeBackground()">Change background</button>
+        <br>
+        <!-- Logout -->
+        <button class="btn btn-sm btn-danger bubblegum mb-2" type="button" onclick="window.location.href='/logout'">Logout</button>
+      </div>
+    </div>
+    
+    <!-- Portfolio section -->
+    <div class='col-auto container text-center index-container' style='height:fit-content;'>
+      <!-- Title -->
+      <div class="text-center custom-title">
+        <img src="/static/media/your_creations.png" alt="Your Creations" border="0">
+      </div>
+      <!-- Canvas section -->
+      {% for image in images %}
+      <div class="card box-outline-card mb-5" style='height:fit-content;'>
+        <div class='podium bubblegum' style='background: white; text-shadow: none !important;'>{{ image[4] }}</div>
+        <!-- Star & Body -->
+        <div class="card-body want-to-invert container" style='width:300px;'>
+          <img src="{{ image[1] }}" alt="Submission Image" class='submission-image'>
+          <input type="hidden" name='id' value="{{ image[0] }}">
+          <button type="button" class="btn btn btn-sm mt-2 mr-2 bubblegum" style='border-radius: 20px; top: 0px; right: 0px; position:absolute; z-index:3;' onclick="deleteConfirm('{{ image[0] }}')">Delete</button>
+        </div>
+        <!-- Footer -->
+        <div class="card-footer"><span class='image-description'>{{ image[3] }}</span></div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<!-- Delete alert -->
+<div class="d-flex align-items-center justify-content-center">
+  <div class="container text-center box-outline bounce-in" style="width: 400px !important; display = none;" id='deleteAlert'>
+    <button type="button" class="btn btn-secondary btn-sm mt-2 mr-2 close-icon" style='border-radius: 30px;' onclick='closeAlert()'><i class="fa-solid fa-xmark"></i></button>
+    <img class="mb-4" src="{{ url_for('static', filename='media/pencil_sad.png') }}" alt="" width="40" height="72">
+    <h1 class="h3 mb-3 font-weight-normal" style='color:black;'>Are you sure you want to delete this drawing?</h1>
+    <br>
+    <form action="/delete-submission" method="POST">
+      <input type="hidden" name='id' value="" id='final-delete-button'>
+      <button type="submit" class="btn btn-danger btn-sm mt-2 mr-2">Delete</button>
+    </form>
+    <br>
+    <p class="mt-4 mb-3 text-muted">© Finish the Drawing 2023</p>
+  </div>
+</div>
+
+<!-- Hidden form for background choice -->
+<form id="backgroundForm" action="/change-background" method="POST" style="display: none;">
+  <input type="hidden" id="backgroundInput" name="backgroundClass" value="">
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src='/static/js/alert_box.js'></script>
+<script src='/static/js/background_selector.js'></script>
+
+{% endblock %}

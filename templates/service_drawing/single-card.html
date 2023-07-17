@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Content -->
+<div class='min-vh-100' style='top:0px'>
+  <div class='master-container'>
+
+    <!-- Title and header content-->
+    <div class="text-center custom-title">
+      <img src="/static/media/finish.png" alt="handwriting-fonts" border="0">
+      <div class=''>
+        <span class="emph-title">"{{word}}"</span>
+      </div>
+      <!-- Share bar -->
+      <div class="index-container-background ml-2 mr-2 mt-4">{% include 'share-bar.html' %}</div>
+    </div>
+
+    <!-- Main content -->
+    <div class="text-center bounce-in" id="books" style='margin-bottom:80px'>
+      <div class="container">
+        <div class="row justify-content-center my-5 display-flex">
+
+          <!-- Submission -->
+          <div class="col-auto mr-1 mb-3 text-center index-container align-items-center justify-content-center p-5">
+            <div id="card-{{ submission.id }}" class="card box-outline-card">
+              <!-- Star & Body -->
+              <div class="card-body want-to-invert">
+                <div class="star-icon mt-2">
+                  <i class="fa-solid fa-heart" style='color:red;'></i> {{ submission.votes }}
+                </div>
+                <!-- remove card -->
+                <img src="{{ submission.image }}" alt="Submission Image" class='submission-image' id="image-{{ submission.id }}">
+              </div>
+              <!-- Footer -->
+              <div class="card-footer"><span class='image-description'>{{ submission.message }}</span></div>
+            </div>
+          </div>
+
+          <!-- User -->
+          {% if submission.user != 'Guest Drawer' %}
+          <div class="{{ get_background(submission.user)[0] }}  col-auto container text-center index-container" style='height:fit-content !important; width: 500px;'>
+            <!-- Title -->
+            <div class="text-center custom-title mb-4 mt-4 index-container-background">
+              <span class='bubblegum'> Drawn by</span> <br> <span class='sig1 '> {{ submission.user }}</span>
+            </div>
+            <!-- Drawing -->
+            <div class='index-container-background'>
+              <img class="mb-2 mt-2" src="{{ get_profile_pic(submission.user)[0] }}" alt="" width="200px" height="200px" id='profile-pic' style='background-color:white;'>
+              <button class="btn btn-lg btn-link btn-block bubblegum mb-0" type="button" onclick="window.location.href='/view-profile/?username={{ submission.user }}'"> View Profile</button>
+            </div>
+          </div>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- View User -->
+<script src='/static/js/view_user.js'></script>
+
+<!-- SHRINK TEXT TO FIT -->
+<script src='/static/js/shrink_text.js'></script>
+{% endblock %}

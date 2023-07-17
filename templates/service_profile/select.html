@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class=" d-flex align-items-center min-vh-100 ">
+    <div class="container text-center box-outline bounce-in pokadot" style="width: 400px !important;">
+        <img class="mb-4" src="{{ url_for('static', filename='media/icon-512.png') }}" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal" style='color:black;'>Finish the Drawing!</h1>
+        <br>
+        <button class="btn btn-primary mx-auto" onclick="login()">Login</button>
+        <br>
+        <button class="btn mx-auto" onclick="register()">Register</button>
+        <br>
+        <button class="btn mx-auto" onclick="index()">Play as guest</button>
+        <p class="mt-4 mb-3 text-muted">© Finish the Drawing 2023</p>
+    </div>
+</div>
+
+{% endblock %}
+
