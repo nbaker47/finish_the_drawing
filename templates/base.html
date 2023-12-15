@@ -68,12 +68,19 @@
 <!-- Footer -->
 <footer class="footer p-1 text-center">
     <div class="container-fluid text-center footer-container">
-      <div class="row d-flex align-items-center no-gutters">
+      <div class="row d-flex align-items-center no-gutters justify-content-center">
 
         <!-- HOME -->
         <div class="col-auto mr-2">
           <div class="icon" onclick="home()">
             <img width="100" height="100" src="https://img.icons8.com/stickers/100/pencil-tip.png" alt="pencil-tip"/>
+            </div>
+        </div>
+
+        <!-- FAMILY MODE -->
+        <div class="col-auto mr-2">
+          <div class="icon" onclick="partyModeIndex()">
+            <img width="100" height="100" src="https://img.icons8.com/stickers/100/groups.png" alt="groups"/>
             </div>
         </div>
         
@@ -102,10 +109,19 @@
           </div>
         </div>
 
-        <!-- COPYRIGHT -->
+        <!-- COPYRIGHT
         <div class="col ms-auto">
           <span style="text-align: end; padding-right: 3%; font-size: 10px;" class='text-dark bubblegum'>  2023 Finish the Drawing © <br> finishthedrawing.contact@gmail.com </span>
         </div>
+         -->
+
+        <!-- Settings -->
+        <div class="col-auto">
+          <div class="icon"  onclick="settingsInfo()">
+            <img width="100" height="100" src="https://img.icons8.com/stickers/100/settings.png" alt="settings"/>
+          </div>
+        </div>
+
       </div>
     </div>
   </footer>
@@ -126,6 +142,10 @@
       window.location.href = "/view";
   }   
 
+  function settingsInfo(){
+    window.location.href = "/settings-info";
+  }   
+
   function select(){
     window.location.href = "/select";
   }   
@@ -144,6 +164,18 @@
 
   function index() {
     window.location.href = "/index";
+  }
+
+  function privacy() {
+    window.location.href = "/privacy";
+  }
+
+  function accountDeletion() {
+    window.location.href = "/account-deletion";
+  }
+
+  function partyModeIndex() {
+    window.location.href = "/partymode-index";
   }
 
   function openCard(id) {

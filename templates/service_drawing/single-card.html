@@ -21,7 +21,7 @@
         <div class="row justify-content-center my-5 display-flex">
 
           <!-- Submission -->
-          <div class="col-auto mr-1 mb-3 text-center index-container align-items-center justify-content-center p-5">
+          <div class="col-auto mr-1 mb-3 text-center index-container align-items-center justify-content-center p-3 diagonal" style='height:fit-content;'>
             <div id="card-{{ submission.id }}" class="card box-outline-card">
               <!-- Star & Body -->
               <div class="card-body want-to-invert">
@@ -40,12 +40,12 @@
           {% if submission.user != 'Guest Drawer' %}
           <div class="{{ get_background(submission.user)[0] }}  col-auto container text-center index-container" style='height:fit-content !important; width: 500px;'>
             <!-- Title -->
-            <div class="text-center custom-title mb-4 mt-4 index-container-background">
-              <span class='bubblegum'> Drawn by</span> <br> <span class='sig1 '> {{ submission.user }}</span>
+            <div class="text-center custom-title mb-4 mt-4 index-container-background p-4" style='padding:20px !important;'>
+              <span class='bubblegum'> Drawn by</span> <br> <span class='sig1 h6'> {{ submission.user }}</span>
             </div>
             <!-- Drawing -->
             <div class='index-container-background'>
-              <img class="mb-2 mt-2" src="{{ get_profile_pic(submission.user)[0] }}" alt="" width="200px" height="200px" id='profile-pic' style='background-color:white;'>
+              <img class="mb-2 mt-4" src="{{ get_profile_pic(submission.user)[0] }}" alt="" width="200px" height="200px" id='profile-pic' style='background-color:white;'>
               <button class="btn btn-lg btn-link btn-block bubblegum mb-0" type="button" onclick="window.location.href='/view-profile/?username={{ submission.user }}'"> View Profile</button>
             </div>
           </div>

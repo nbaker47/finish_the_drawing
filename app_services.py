@@ -35,6 +35,7 @@ def get_daily_word_and_seed():
     
     return random_word, seed
 
+
 def upload_image_to_bucket(drawing_data, username=None):
     # Get the image data from the POST request
     base64_image = drawing_data

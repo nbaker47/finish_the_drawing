@@ -24,7 +24,7 @@
 
 
     <!-- User Submissions -->
-    <div class='col-auto container text-center index-container bounce-in' style='height:fit-content;'>
+    <div class='col-auto container text-center index-container bounce-in diagonal' style='height:fit-content;'>
       <!--Title-->
       <div class="text-center custom-title">
         <img src="/static/media/their_creations.png" alt="Your Creations" border="0">
@@ -35,6 +35,10 @@
         <div class='podium bubblegum' style='background: white; text-shadow: none !important;'>{{ image[4] }}</div>
         <!-- Star & Body -->
         <div class="card-body want-to-invert">
+          <div class="star-icon mt-2">
+            <i class="fa-solid fa-heart" style='color:red;'></i> {{ image[2] }}<br>
+            <i class="fa-solid fa-share mt-2" onclick="openCard('{{ image[0] }}')"></i> 
+          </div>
           <img src="{{ image[1] }}" alt="Submission Image" class='submission-image'>
         </div>
         <!-- Footer -->

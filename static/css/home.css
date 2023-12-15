@@ -217,11 +217,8 @@ body{
 }
 
 .card-footer {
-  height: 100px;
   background-color: #87c1ff;
-  padding-left: 1% !important;
-  padding-right: 1% !important;
-  overflow:hidden ;
+  padding: 14px;
   text-overflow: ellipsis;
   word-wrap: break-word;
   display: block;
@@ -277,7 +274,6 @@ body{
   
 }
 
-
 .small-button {
   font-size: 14px;
   padding: 6px 12px;
@@ -310,7 +306,6 @@ body{
 }
 
 .button-container {
-  background-color: #ffffff;
   border-radius: 20px;
   outline: rgb(255, 255, 255) 2px solid;
   flex: auto;
@@ -321,7 +316,7 @@ body{
   font-size: 30px;
   cursor: pointer;
   font-weight: bold;  
-  color: rgb(32, 33, 51);
+  color: rgb(22, 22, 34);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -433,7 +428,7 @@ body{
 
   background-color: #ffffff;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
-  border: #787878 2px solid;  
+  border: #272727 1px solid;  
   border-radius: 10px;
   cursor: pointer;
 }
@@ -833,4 +828,17 @@ body{
 .thin-white{
   background-color: #ffffff;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.diagonal{
+  background-color: #f7f7ff;
+  background: repeating-linear-gradient( 45deg, #91beff, #91beff 5px, #f7f7ff 5px, #f7f7ff 25px );
+}
+
+.faint-diagonal{
+  background-color: #f7f7ff;
+  background-image:  linear-gradient(135deg, #a5cbff 25%, transparent 25%), linear-gradient(225deg, #a5cbff 25%, transparent 25%), linear-gradient(45deg, #a5cbff 25%, transparent 25%), linear-gradient(315deg, #a5cbff 25%, #f7f7ff 25%);
+  background-position:  33px 0, 33px 0, 0 0, 0 0;
+  background-size: 66px 66px;
+  background-repeat: repeat;
 }

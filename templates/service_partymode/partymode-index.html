@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex align-items-center min-vh-100 gradient-background">
+  <!-- Index Container -->
+  <div class='container text-center index-container faint-diagonal '>
+
+    <!-- Search Bar -->
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <form id="search-form" action="/search-for-user" method="POST">
+            <div class="input-group">
+              <input id="search-input" type="text" class="form-control" name="username" placeholder="Search for users to play with...">
+              <div class="input-group-append">
+                <button id="search-button" class="btn btn-dark" type="submit">Search</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Search Results -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <div id="search-results" class="container">
+            <div class="row">
+              <div class="col-12">
+
+                <div class="" id='results'>
+
+                  {% if invited %}
+                  <div class="alert alert-success bounce-in p-3 index-container-background" role="alert">
+                    <div class='index-container-background p-2'>
+                      <h2>You have been invited</h2>
+                    </div>
+                  </div>
+                  {% endif %}
+                  
+                  {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                      {{ error }}
+                    </div>
+                  {% endif %}
+
+                  {% if result %}
+                    <div class="alert alert-success bounce-in p-3 index-container-background {{ get_background(result.username)[0]}}" role="alert">
+                      <img class="rounded-circle profile-circle" src="{{ result[2] }}" width="100" height="100">
+                      <div class='index-container-background p-2'>
+                        <h2>{{ result.username }} found!</h2>
+                        <button class="btn btn-success" onclick="window.location.href='/invite-user/?username={{ result.username }}'">Invite</button>
+                      </div>
+                    </div>
+                  {% endif %}
+
+                </div>
+              </div>
+
+              <!-- Party -->
+              <div class="col-12">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class='d-flex align-items-center mb-3 mt-2'>
+                        <h1 class="mr-4">Your Party</h5>
+                        <button class="btn btn-primary"> Start game </button>
+                      </div>
+                      <div class="alert alert-success p-3 index-container-background {{ get_background(user.username)[0]}}" role="alert">
+                        <div class="d-flex align-items-center">
+                          <img class="mr-5 rounded-circle profile-circle" src="{{ get_profile_pic(user.username)[0]}}" width="100" height="100">
+                          <div class='index-container-background p-2'>
+                            <h5 class="mb-0">{{ user.username }}</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<!-- SUBMIT SEARCH FOR USER FORM -->
+<script>
+  // TODO
+</script>
+
+{% endblock %}

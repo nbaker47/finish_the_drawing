@@ -22,6 +22,8 @@ login_manager.init_app(app)
 from service_profile.login import *
 # import images.py routes
 from service_drawing.images import *
+# import partymode.py routes
+from service_partymode.partymode import *
 
 ''' ---------------------------- INJECTOR  ---------------------------- '''
 
@@ -84,16 +86,15 @@ def serve_assetlinks():
 def account_deletion():
     return render_template('app_services/account-deletion.html')
 
-# serve service-worker.js
-@app.route('/service-worker.js')
-def serve_worker():
-    return send_from_directory(app.root_path, 'service-worker.js')
-
 # Handle the /privacy route
 @app.route('/privacy')
 def privacy():
     return render_template('app_services/privacy.html')
 
+# Handle the /settings-info route
+@app.route('/settings-info')
+def settings_info():
+    return render_template('app_services/settings-info.html')
 
 # Show the user their cookies
 @app.route('/print_session_cookie')
@@ -111,6 +112,10 @@ def print_session_cookie():
 
     return 'Voted and Downvoted image IDs printed in the console.'
 
+# serve service-worker.js
+@app.route('/service-worker.js')
+def serve_worker():
+    return send_from_directory(app.root_path, 'service-worker.js')
 
 ''' ---------------------------- INDEX ---------------------------- '''
 

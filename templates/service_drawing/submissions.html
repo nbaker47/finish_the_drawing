@@ -57,7 +57,7 @@
                   </i>{{ submission.votes }}
                   <br>
                   <!-- Dislike -->
-                  {% if user and request.cookies.get('downvoted_image') is not none %}
+                  {% if user %}
                     <i class="fa-solid fa-thumbs-down mt-2" 
                       {% if submission.id not in request.cookies.get('downvoted_image') %} onclick="vote(this, '{{ submission.id }}', 'down')"  {% endif %}
                       {% if submission.id in request.cookies.get('downvoted_image') %} style="color: red;" onclick=""  {% endif %}
@@ -204,7 +204,6 @@
 
     }
 </script>
-<script src="/static/js/shrink_text.js"></script>
 <script src="/static/js/alert_box_main.js"></script>
 
 {% endblock %}

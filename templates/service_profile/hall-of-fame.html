@@ -11,17 +11,20 @@
         <img src="/static/media/hall_of_fame.png" alt="Hall of Fame" border="0" width="60%">
     </div>
 
-    <!-- Tutorial Message -->
+    <!-- Share Bar -->
+    {% include 'share-bar.html' %}
+
+    <!-- Tutorial -->
     <div class="container mb-5">
       <div class="text-center">
-        <span class="bubblegum thin-white">Click on a user to see their profile!</span>
+        <span class="bubblegum thin-white mb-3">Click on a user to see their profile!</span>
       </div>
     </div>
 
     <!-- Leaderboard -->
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-12 col-md-6 text-center" style="max-width: 600px;">
+        <div class="col-12 col-md-8 text-center">
         {% for user in users %}
           {% if get_profile_pic(user[0]) %}
             <!-- User Card -->
@@ -33,8 +36,10 @@
                 <a href="#" onclick="viewUser('{{ user[0] }}')">
                   <span class="sig1 ml-4 font-weight-bold index-container-background p-2">{{ user[0] }}</span>
                 </a>
-                <p class="mt-4 bubblegum index-container-background p-2">Drawings Submitted: {{ user[1] }}</p>
-                <p class="mt-4 bubblegum index-container-background p-2">Total Likes: {{ user[2] }}</p>
+                <div class="container d-flex flex-column align-items-center">
+                  <p class="mt-4 bubblegum index-container-background p-2 w-75 text-center">Drawings Submitted: {{ user[1] }}</p>
+                  <p class="mt-1 bubblegum index-container-background p-2 w-75 text-center">Total Likes: {{ user[2] }}</p>
+                </div>                
               </div>
             </div>
           {% endif %}

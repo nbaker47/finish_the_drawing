@@ -4,7 +4,7 @@
 
 <div class="d-flex align-items-center min-vh-100 gradient-background">
   <!-- Index Container -->
-  <div class='container text-center index-container'>
+  <div class='container text-center index-container faint-diagonal'>
 
     <!-- Pencil Man -->
     <div id="pencil-container" class="container">
@@ -29,8 +29,8 @@
     </div>
 
     <!-- Drawing interface -->
-    <div class="text-center drawing-interface box-outline">
-      <div class='inner-interface'>
+    <div class="text-center drawing-interface box-outline index-container-background border border-dark">
+      <div class='inner-interface '>
         {% include 'share-bar.html' %}
         <!-- Canvas -->
         <canvas id="drawing-canvas" class='want-to-invert fade-in' width='320px' height='280px'></canvas>

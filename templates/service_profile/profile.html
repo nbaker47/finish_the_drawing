@@ -8,7 +8,7 @@
   <div class='row justify-content-center my-5 display-flex'>
 
     <!-- Player Passport -->
-    <div id='back' class='{{ background }} col-auto mr-1 mb-3 text-center index-container align-items-center justify-content-center p-4' style="height:440px; width:500px;">
+    <div id='back' class='{{ background }} col-auto mr-1 mb-3 text-center index-container align-items-center justify-content-center p-2' style="height:440px; width:500px;">
       <!-- Poka background -->
       <div style='width:300px;' class='container index-container-background mb-4'>
         <!-- Headshot -->
@@ -16,16 +16,16 @@
         <br>
         <h2 class="sig1 font-weight-bold">{{ user.username }}</h1>
         <!-- Profile Buttons -->
-        <button class="btn btn-sm btn-link btn-block bubblegum mb-1" type="button" onclick="window.location.href='/redraw'">Redraw profile picture</button>
-        <button class="btn btn-sm btn-link btn-block bubblegum text-info" type="button" onclick="changeBackground()">Change background</button>
+        <button class="btn btn-link btn-block bubblegum mb-0" type="button" onclick="window.location.href='/redraw'">Redraw profile picture</button>
+        <button class="btn btn-link btn-block bubblegum heartbeat" type="button" onclick="changeBackground()">Change background</button>
         <br>
         <!-- Logout -->
-        <button class="btn btn-sm btn-danger bubblegum mb-2" type="button" onclick="window.location.href='/logout'">Logout</button>
+        <button class="btn btn-sm mt-0 mb-2 mr-2" type="button" onclick="window.location.href='/logout'">Logout</button>
       </div>
     </div>
     
     <!-- Portfolio section -->
-    <div class='col-auto container text-center index-container' style='height:fit-content;'>
+    <div class='col-auto container text-center index-container diagonal' style='height:fit-content;'>
       <!-- Title -->
       <div class="text-center custom-title">
         <img src="/static/media/your_creations.png" alt="Your Creations" border="0">
@@ -36,6 +36,10 @@
         <div class='podium bubblegum' style='background: white; text-shadow: none !important;'>{{ image[4] }}</div>
         <!-- Star & Body -->
         <div class="card-body want-to-invert container" style='width:300px;'>
+          <div class="star-icon mt-2">
+            <i class="fa-solid fa-heart" style='color:red;'></i> {{ image[2] }} <br>
+            <i class="fa-solid fa-share mt-2" onclick="openCard('{{ image[0] }}')"></i> 
+          </div>
           <img src="{{ image[1] }}" alt="Submission Image" class='submission-image'>
           <input type="hidden" name='id' value="{{ image[0] }}">
           <button type="button" class="btn btn btn-sm mt-2 mr-2 bubblegum" style='border-radius: 20px; top: 0px; right: 0px; position:absolute; z-index:3;' onclick="deleteConfirm('{{ image[0] }}')">Delete</button>
