@@ -1,11 +1,7 @@
-from flask import render_template, request, redirect, url_for
-from flask_login import login_user, logout_user, login_required, current_user
-from service_profile.user import User
-import bcrypt
+from __main__  import app
+
+from flask import render_template, request
 from service_profile import user_db
-from main import app, login_manager
-from service_drawing.images import upload_image_to_bucket
-from service_drawing.drawing_db import select_where_user
 
 # Handle the /partymode-index route
 @app.route('/partymode-index')

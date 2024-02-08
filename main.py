@@ -3,7 +3,7 @@ from google.cloud import storage
 import pytz
 from flask_login import LoginManager
 # import app services
-from app_services import *
+import app_services
 
 ''' ---------------------------- PREAMBLE ---------------------------- '''
 
@@ -48,7 +48,7 @@ def inject_user():
 def wipe():
     # Set up GCS client
     storage_client = storage.Client()
-    bucket_name = 'drawoff-391919.appspot.com'
+    bucket_name = 'finish-the-drawing-413709.appspot.com'
 
     # Retrieve the bucket
     bucket = storage_client.bucket(bucket_name)
@@ -124,7 +124,7 @@ def serve_worker():
 def index():
     
     # Get the daily word and seed
-    random_word, seed = get_daily_word_and_seed()
+    random_word, seed = app_services.get_daily_word_and_seed()
 
     return render_template('service_drawing/index.html', word=random_word, seed=seed)
 
@@ -133,7 +133,7 @@ def index():
 def select_or_index():
     
     # Get the daily word and seed
-    random_word, seed = get_daily_word_and_seed()
+    random_word, seed = app_services.get_daily_word_and_seed()
     
     # Check if the user is logged in
     if current_user.is_authenticated:

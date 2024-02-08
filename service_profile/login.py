@@ -1,9 +1,10 @@
+from __main__  import app, login_manager
+
 from flask import render_template, request, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 from service_profile.user import User
 import bcrypt
 from service_profile import user_db
-from main import app, login_manager
 from service_drawing.images import upload_image_to_bucket
 from service_drawing.drawing_db import select_where_user
 
@@ -208,9 +209,9 @@ def delete_user():
         print('UPDATING PROFILE PIC', username)
     
         
-        image_url = 'https://storage.googleapis.com/drawoff-391919.appspot.com/profilepic_nathan.png'
+        #image_url = 'https://storage.googleapis.com/drawoff-391919.appspot.com/profilepic_nathan.png'
         
-        user_db.update_profile_pic(username, image_url)
+        #user_db.update_profile_pic(username, image_url)
     
     except:
         print('ERROR UPDATING PROFILE PIC')

@@ -1,167 +1,121 @@
-from google.cloud.sql.connector import Connector
+from google.cloud.sql.connector import Connector, IPTypes
+import pytds
 import sqlalchemy
 import pymysql
 
-# initialize Connector object
-connector = Connector()
+def connect_with_connector() -> sqlalchemy.engine.base.Engine:
+    instance_connection_name = 'finish-the-drawing-413709:asia-east1:draw'
+    db_user = 'root'
+    db_pass = 'root' 
+    db_name = 'draw'
 
-# function to return the database connection
-def getconn() -> pymysql.connections.Connection:
-    conn: pymysql.connections.Connection = connector.connect(
-        "drawoff-391919:us-east4:drawoffdb",
-        "pymysql",
-        user="db-manager",
-        password="RjMIUH6<}rxF);$6",
-        db="drawings"
+    connector = Connector()
+    
+    def getconn() -> pytds.Connection:
+        conn = connector.connect(
+            instance_connection_name,
+            "pymysql",
+            user=db_user,
+            password=db_pass,
+            db=db_name,
+        )
+        return conn
+
+    pool = sqlalchemy.create_engine(
+        "mysql+pymysql://",
+        creator=getconn,
     )
-    return conn
+    return pool
 
-# create connection pool
-pool = sqlalchemy.create_engine(
-    "mysql+pymysql://",
-    creator=getconn,
-    
-)
-
-
-# function to create entry in database
-def create_entry(id, image, votes, message, word, user):
-    
-    # insert statement
-    insert_stmt = sqlalchemy.text(
-        "INSERT INTO drawing_data (id, image, votes, message, word, user) VALUES (:id, :image, :votes, :message, :word, :user)",
-    )
-
-    with pool.connect() as db_conn:
-        
-        # insert into database
-        db_conn.execute(insert_stmt, parameters={"id": id, "image": image,
-                                                 "votes": votes, "message": message, 'word': word, 'user': user})
-
-        db_conn.commit()
-
-# function to create entry in database
-def select_all(word):
-    
-    with pool.connect() as db_conn:
-
-        # query database
-        result = db_conn.execute(sqlalchemy.text("SELECT * from drawing_data WHERE word = :word"), {'word' : word}).fetchall()
-
-        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
-        db_conn.commit()
-
-        # Do something with the results
-        # for row in result:
-            # print(row)
-            
-    return result
-
-
-# function to create entry in database
-def select_where_id(id):
-    
-    with pool.connect() as db_conn:
-
-        # query database
-        result = db_conn.execute(sqlalchemy.text("SELECT * from drawing_data WHERE id = :id"), {'id' : id}).fetchall()
-
-        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
-        db_conn.commit()
-
-        # Do something with the results
-        # for row in result:
-            
-    return result
-
-# function to wipe table
-def wipe_table():
-    
-    # wipe table
-    wipe_stmt = sqlalchemy.text(
-        "DELETE FROM drawing_data"
-    )
-    
-    with pool.connect() as db_conn:
-        
-        # wipe table
-        db_conn.execute(wipe_stmt)
-        
-        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
-        db_conn.commit()
-        
-# function to drop table
-def drop_table():
-    
-    # delete table
-    drop_stmt = sqlalchemy.text(
-        "DROP TABLE drawing_data"
-    )
-    
-    with pool.connect() as db_conn:
-        
-        # wipe table
-        db_conn.execute(drop_stmt)
-        
-        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
-        db_conn.commit()
-        
-# function to create table
 def create_table():
-    
     # create table
     create_stmt = sqlalchemy.text(
         "CREATE TABLE IF NOT EXISTS drawing_data (id VARCHAR(255) PRIMARY KEY, image VARCHAR(255), votes INT, message VARCHAR(255), word VARCHAR(255), user VARCHAR(255) )"
     )
     
-    with pool.connect() as db_conn:
-        
+    with connect_with_connector().connect() as db_conn:
         # wipe table
         db_conn.execute(create_stmt)
-        
         # commit transaction (SQLAlchemy v2.X.X is commit as you go)
         db_conn.commit()
 
-# function to vote
+def create_entry(id, image, votes, message, word, user):
+    # insert statement
+    insert_stmt = sqlalchemy.text(
+        "INSERT INTO drawing_data (id, image, votes, message, word, user) VALUES (:id, :image, :votes, :message, :word, :user)"
+    )
+
+    with connect_with_connector().connect() as db_conn:
+        # insert into database
+        db_conn.execute(insert_stmt, parameters={"id": id, "image": image, "votes": votes, "message": message, 'word': word, 'user': user})
+        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
+        db_conn.commit()
+
+def select_all(word):
+    with connect_with_connector().connect() as db_conn:
+        # query database
+        result = db_conn.execute(sqlalchemy.text("SELECT * from drawing_data WHERE word = :word"), {'word' : word}).fetchall()
+        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
+        db_conn.commit()
+    return result
+
+def select_where_id(id):
+    with connect_with_connector().connect() as db_conn:
+        # query database
+        result = db_conn.execute(sqlalchemy.text("SELECT * from drawing_data WHERE id = :id"), {'id' : id}).fetchall()
+        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
+        db_conn.commit()
+    return result
+
+def wipe_table():
+    # wipe table
+    wipe_stmt = sqlalchemy.text(
+        "DELETE FROM drawing_data"
+    )
+    
+    with connect_with_connector().connect() as db_conn:
+        # wipe table
+        db_conn.execute(wipe_stmt)
+        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
+        db_conn.commit()
+
+def drop_table():
+    # delete table
+    drop_stmt = sqlalchemy.text(
+        "DROP TABLE drawing_data"
+    )
+    
+    with connect_with_connector().connect() as db_conn:
+        # wipe table
+        db_conn.execute(drop_stmt)
+        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
+        db_conn.commit()
+
 def vote(id, vote):
     # vote statement
     vote_stmt = sqlalchemy.text(
         "UPDATE drawing_data SET votes = votes + :vote WHERE id = :id"
     )
     
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         # execute the vote statement
         db_conn.execute(vote_stmt, {"id": id, "vote": vote})
-
         # commit transaction (SQLAlchemy v2.X.X is commit as you go)
         db_conn.commit()
-
         # retrieve and print the updated row
         select_stmt = sqlalchemy.text(
             "SELECT * FROM drawing_data WHERE id = :id"
         )
-        
         result = db_conn.execute(select_stmt, {"id": id})
         updated_row = result.fetchone()
-        
         # print(updated_row)
 
-
-# selct where
 def select_where_user(user):
-    
-    with pool.connect() as db_conn:
-
+    with connect_with_connector().connect() as db_conn:
         # query database
         result = db_conn.execute(sqlalchemy.text("SELECT * from drawing_data WHERE user = :user"), {'user' : user}).fetchall()
-
         # commit transaction (SQLAlchemy v2.X.X is commit as you go)
         db_conn.commit()
-
-        # Do something with the results
-        # for row in result:
-            # print(row)
-            
     return result
 
 def delete_row_by_id(id):
@@ -170,11 +124,10 @@ def delete_row_by_id(id):
         "DELETE FROM drawing_data WHERE id = :id"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         # delete the row with the given id
         db_conn.execute(delete_stmt, {"id": id})
-
         # commit transaction (SQLAlchemy v2.X.X is commit as you go)
         db_conn.commit()
-        
 
+create_table()

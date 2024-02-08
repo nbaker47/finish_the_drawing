@@ -61,7 +61,7 @@ def upload_image_to_bucket(drawing_data, username=None):
     storage_client = storage.Client()
 
     # Retrieve the bucket
-    bucket = storage_client.bucket('drawoff-391919.appspot.com')
+    bucket = storage_client.bucket('finish-the-drawing-413709.appspot.com')
 
     # Generate a unique filename
     if username is not None:
@@ -69,11 +69,14 @@ def upload_image_to_bucket(drawing_data, username=None):
     else:
         filename = f"image_{datetime.now().strftime('%Y%m%d%H%M%S')}.png"
 
-    # Check if the file already exists
-    existing_blob = bucket.blob(filename)
-    if existing_blob.exists():
-        print("File already exists, deleting...")
-        existing_blob.delete()
+    try:
+        # Check if the file already exists
+        existing_blob = bucket.blob(filename)
+        if existing_blob.exists():
+            print("File already exists, deleting...")
+            existing_blob.delete()
+    except Exception as e:
+        print(e)
 
     # Upload the image data to the bucket
     blob = bucket.blob(filename)

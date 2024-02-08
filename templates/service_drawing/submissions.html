@@ -59,8 +59,14 @@
                   <!-- Dislike -->
                   {% if user %}
                     <i class="fa-solid fa-thumbs-down mt-2" 
-                      {% if submission.id not in request.cookies.get('downvoted_image') %} onclick="vote(this, '{{ submission.id }}', 'down')"  {% endif %}
-                      {% if submission.id in request.cookies.get('downvoted_image') %} style="color: red;" onclick=""  {% endif %}
+                    {% if request.cookies.get('downvoted_image') is not none %}
+                        {% if submission.id not in request.cookies.get('downvoted_image') %}
+                            <button onclick="vote(this, '{{ submission.id }}', 'down')">Vote Down</button>
+                        {% endif %}
+                        {% if submission.id in request.cookies.get('downvoted_image') %}
+                            <button style="color: red;" disabled>Already Voted Down</button>
+                        {% endif %}
+                    {% endif %}
                     > 
                     </i>
                   {% elif not user %}

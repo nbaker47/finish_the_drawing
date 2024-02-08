@@ -1,5 +1,6 @@
 
-from main import app
+from __main__  import app
+
 from flask import request, redirect, url_for, render_template, make_response
 from service_drawing import drawing_db
 from app_services import *
@@ -150,7 +151,7 @@ def delete_submission():
     storage_client = storage.Client()
 
     # Retrieve the bucket
-    bucket = storage_client.bucket('drawoff-391919.appspot.com')
+    bucket = storage_client.bucket('finish-the-drawing-413709.appspot.com')
 
     # delete from bucket
     existing_blob = bucket.blob(image_id+'.png')

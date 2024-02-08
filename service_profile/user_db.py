@@ -1,37 +1,46 @@
 from google.cloud.sql.connector import Connector
 import sqlalchemy
+from google.cloud.sql.connector import Connector, IPTypes
+import pytds
+import sqlalchemy
 import pymysql
 
-# initialize Connector object
-connector = Connector()
+# python -c 'from service_profile.user_db import *; drop_table();'
 
-# function to return the database connection
-def getconn() -> pymysql.connections.Connection:
-    conn: pymysql.connections.Connection = connector.connect(
-        "drawoff-391919:us-east4:drawoffdb",
-        "pymysql",
-        user="db-manager",
-        password="RjMIUH6<}rxF);$6",
-        db="drawings"
-    )
-    return conn
+def connect_with_connector() -> sqlalchemy.engine.base.Engine:
+    instance_connection_name = 'finish-the-drawing-413709:asia-east1:draw'
+    db_user = 'root'
+    db_pass = 'root' 
+    db_name = 'draw'
 
-# create connection pool
-pool = sqlalchemy.create_engine(
-    "mysql+pymysql://",
-    creator=getconn,
+    connector = Connector()
     
-)
+    def getconn() -> pytds.Connection:
+        conn = connector.connect(
+            instance_connection_name,
+            "pymysql",
+            user=db_user,
+            password=db_pass,
+            db=db_name,
+        )
+        return conn
+
+    pool = sqlalchemy.create_engine(
+        "mysql+pymysql://",
+        creator=getconn,
+    )
+    return pool
+
 
 # function to create table
 def create_user_table():
     
     # create table
     create_stmt = sqlalchemy.text(
-        "CREATE TABLE IF NOT EXISTS user_data (username VARCHAR(255) PRIMARY KEY, password VARCHAR(255), profilepic VARCHAR(255) )"
+        "CREATE TABLE IF NOT EXISTS user_data (username VARCHAR(255) PRIMARY KEY, password VARCHAR(255), profilepic VARCHAR(255), role VARCHAR(255), background VARCHAR(255) )"
     )
     
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         
         # wipe table
         db_conn.execute(create_stmt)
@@ -46,7 +55,7 @@ def create_user(username, password, profilepic):
         "SELECT COUNT(*) FROM user_data WHERE username = :username"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         result = db_conn.execute(select_stmt, {"username": username})
         count = result.scalar()
 
@@ -75,7 +84,7 @@ def list_users():
         "SELECT * FROM user_data"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         result = db_conn.execute(select_stmt)
 
 
@@ -93,7 +102,7 @@ def get_password_from_database(username):
         "SELECT password FROM user_data WHERE username = :username"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         result = db_conn.execute(select_stmt, {"username": username})
         password = result.fetchone()
 
@@ -111,11 +120,10 @@ def get_user(username):
         "SELECT * FROM user_data WHERE username = :username"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         result = db_conn.execute(select_stmt, {"username": username})
         
         user = result.fetchone()
-
 
         # Commit the transaction
         db_conn.commit()
@@ -131,7 +139,7 @@ def get_profile_pic(username):
         "SELECT profilepic FROM user_data WHERE username = :username"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         result = db_conn.execute(select_stmt, {"username": username})
         pic = result.fetchone()
 
@@ -149,10 +157,9 @@ def get_background(username):
         "SELECT background FROM user_data WHERE username = :username"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         result = db_conn.execute(select_stmt, {"username": username})
         pic = result.fetchone()
-
 
         # Commit the transaction
         db_conn.commit()
@@ -167,7 +174,7 @@ def update_profile_pic(username, profilepic):
         "UPDATE user_data SET profilepic = :profilepic WHERE username = :username"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         db_conn.execute(select_stmt, {"username": username, "profilepic": profilepic})
 
         # Commit the transaction
@@ -183,7 +190,7 @@ def update_background(username, background):
         "UPDATE user_data SET background = :background WHERE username = :username"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         db_conn.execute(select_stmt, {"username": username, "background": background})
 
         # Commit the transaction
@@ -199,7 +206,7 @@ def add_column():
         "ALTER TABLE user_data ADD COLUMN background VARCHAR(255);"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         db_conn.execute(select_stmt)
 
         # Commit the transaction
@@ -216,7 +223,7 @@ def set_role_artist(username):
         "UPDATE user_data SET role = 'artist' WHERE username = :username;"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         db_conn.execute(select_stmt, {"username": username})
 
         # Commit the transaction
@@ -232,7 +239,7 @@ def set_role_admin(username):
         "UPDATE user_data SET role = 'ace artist' WHERE username = :username;"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         db_conn.execute(select_stmt, {"username": username})
 
         # Commit the transaction
@@ -249,15 +256,16 @@ def is_admin(username):
         "SELECT role FROM user_data WHERE username = :username;"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         result = db_conn.execute(select_stmt, {"username": username})
         
-        role = result.fetchone()[0]
+        try:
+            role = result.fetchone()[0]
+        except:
+            role = "not ace artist"
         
-
         # Commit the transaction
         db_conn.commit()
-        
         
     if role == "ace artist":
         return True
@@ -265,6 +273,17 @@ def is_admin(username):
     # User created successfully, return True or any other desired response
     return False
 
+def drop_table():
+    # delete table
+    drop_stmt = sqlalchemy.text(
+        "DROP TABLE user_data"
+    )
+    
+    with connect_with_connector().connect() as db_conn:
+        # wipe table
+        db_conn.execute(drop_stmt)
+        # commit transaction (SQLAlchemy v2.X.X is commit as you go)
+        db_conn.commit()
 
 def get_hall_of_fame():
     # Get the ordered list of users based on the total number of drawings
@@ -276,7 +295,7 @@ def get_hall_of_fame():
         "SELECT user, SUM(votes) AS total_votes FROM drawing_data GROUP BY user ORDER BY total_votes DESC"
     )
 
-    with pool.connect() as db_conn:
+    with connect_with_connector().connect() as db_conn:
         result_drawings = db_conn.execute(select_stmt_drawings)
         users_drawings = result_drawings.fetchall()
 
@@ -293,3 +312,6 @@ def get_hall_of_fame():
 
         # Pass the merged users list as context to the template
         return merged_users
+    
+
+create_user_table()
